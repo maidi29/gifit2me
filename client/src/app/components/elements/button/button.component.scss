@@ -1,0 +1,15 @@
+@use "./src/theme";
+
+button {
+  background: theme.$colorTertiary;
+  color: #111;
+  font-weight: bold;
+  font-family: theme.$fontFamily;
+  padding: 0.5rem 0.7rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border: none;
+  &:hover {
+    background: darken(theme.$colorTertiary, 20);
+  }
+}
