@@ -42,9 +42,10 @@ body {
 
 h1   {
   font-family: "Game of Squids", theme.$fontFamily, sans-serif;
-  font-size: 3rem;
+  font-size: 3.5rem;
   text-align: center;
-  @include mixins.stroke(4, #fff);
+  @include mixins.stroke(5, #fff);
+  color: theme.$colorTertiary;
 }
 
 
