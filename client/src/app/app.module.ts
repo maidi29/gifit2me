@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 
 import { environment } from 'src/environments/environment';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { ListComponent } from './components/pages/movies/list/list.component';
+import { ButtonComponent } from './components/elements/button/button.component';
+import { StartComponent } from './components/pages/start/start.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -18,7 +19,8 @@ const config: SocketIoConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    ListComponent
+    ButtonComponent,
+    StartComponent
   ],
   imports: [
     BrowserModule,
