@@ -1,5 +1,4 @@
 :host {
-  height: 100%;
 }
 
 .page-container {
@@ -7,7 +6,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   gap: 1rem;
 
   img {
@@ -38,7 +36,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  align-self: stretch;
   .vl {
     border-left: 1px solid black;
     height: 100%;
