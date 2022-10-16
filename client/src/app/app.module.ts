@@ -8,6 +8,10 @@ import { environment } from 'src/environments/environment';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { ButtonComponent } from './components/elements/button/button.component';
 import { StartComponent } from './components/pages/start/start.component';
+import { InputComponent } from './components/elements/input/input.component';
+import { GameComponent } from './components/pages/game/game.component';
+import { ResultsComponent } from './components/pages/results/results.component';
+import { PrivacyComponent } from './components/pages/privacy/privacy.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -20,7 +24,11 @@ const config: SocketIoConfig = {
   declarations: [
     AppComponent,
     ButtonComponent,
-    StartComponent
+    StartComponent,
+    InputComponent,
+    GameComponent,
+    ResultsComponent,
+    PrivacyComponent
   ],
   imports: [
     BrowserModule,

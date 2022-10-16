@@ -1,0 +1,15 @@
+@use 'src/theme';
+
+
+.input {
+  outline: none;
+  background-color: white;
+  border-radius: 2rem;
+  padding: 0 2rem;
+  width: 100%;
+  font-size: 1.3rem;
+  height: 3.5rem;
+  line-height: 1;
+  font-family: theme.$fontFamily;
+  border: none;
+}

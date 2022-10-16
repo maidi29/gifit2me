@@ -48,4 +48,16 @@ h1   {
   color: theme.$colorTertiary;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: theme.$colorSecondary;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 
