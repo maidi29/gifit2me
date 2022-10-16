@@ -21,13 +21,28 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  margin: 1rem 0;
   > *:nth-child(odd) {
     flex: 1;
     align-self: flex-end;
   }
-  > * {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+}
+
+.join-game-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.divisor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  .vl {
+    border-left: 1px solid black;
+    height: 100%;
+    margin-left: -1px;
   }
 }
+

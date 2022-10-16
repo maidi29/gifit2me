@@ -1,9 +1,17 @@
 @use 'theme';
 @use 'mixins';
 
-@font-face {
+/*@font-face {
   font-family: Raleway;
   src: url(./assets/fonts/Raleway-Regular.ttf);
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}*/
+
+@font-face {
+  font-family: Comfortaa;
+  src: url(./assets/fonts/Comfortaa-Regular.ttf);
   font-weight: 400;
   font-style: normal;
   font-display: swap;
