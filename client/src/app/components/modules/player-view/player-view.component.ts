@@ -14,7 +14,7 @@ export class PlayerViewComponent implements OnInit {
   }
 
   public search(input: string) {
-    this.giphyService.getGifsBySearchInput('bubble').subscribe((response) => {
+    this.giphyService.getGifsBySearchInput(input).subscribe((response) => {
       console.log(response);
     })
   }

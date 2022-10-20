@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  socketUrl: 'http://localhost:3000'
+  socketUrl: 'http://localhost:3000',
+  giphyKey: 'DtzlaMukR1WlcMqjpllikIe7mFTGZ4jp'
 };
 
 /*

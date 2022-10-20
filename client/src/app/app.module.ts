@@ -12,6 +12,10 @@ import { InputComponent } from './components/elements/input/input.component';
 import { GameComponent } from './components/pages/game/game.component';
 import { ResultsComponent } from './components/pages/results/results.component';
 import { PrivacyComponent } from './components/pages/privacy/privacy.component';
+import { MasterViewComponent } from './components/modules/master-view/master-view.component';
+import { PlayerViewComponent } from './components/modules/player-view/player-view.component';
+import { CardComponent } from './components/elements/card/card.component';
+import {HttpClientModule} from "@angular/common/http";
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -28,12 +32,16 @@ const config: SocketIoConfig = {
     InputComponent,
     GameComponent,
     ResultsComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    MasterViewComponent,
+    PlayerViewComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SocketIoModule.forRoot(config),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
