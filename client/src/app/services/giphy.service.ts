@@ -20,7 +20,8 @@ interface ResultItem {
   import_datetime: Date
   images: {
     original: Image,
-    downsized: Image
+    downsized: Image,
+    fixed_width_small: Image
   }
 }
 

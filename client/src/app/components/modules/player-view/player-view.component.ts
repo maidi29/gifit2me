@@ -20,19 +20,19 @@ export class PlayerViewComponent implements OnInit {
 
   public search(input: string) {
     this.currentIndex = 0;
-    this.giphyService.getGifsBySearchInput(input).subscribe((response) => {
-      if(response.meta.status === HttpStatusCode.Ok) {
-        this.gifResultSrcs = response.data.map(item => item.images.downsized.url);
-        this.hasMoreResults = response.pagination.total_count > (response.pagination.offset + response.pagination.count);
-      }
-    })
+    this.gifResultSrcs = [];
+    this.fetchGifs(input);
   }
 
   public loadMore(input: string) {
     this.currentIndex += 10;
+    this.fetchGifs(input);
+  }
+
+  private fetchGifs(input: string) {
     this.giphyService.getGifsBySearchInput(input, this.currentIndex).subscribe((response) => {
-      if(response.meta.status === HttpStatusCode.Ok) {
-        this.gifResultSrcs.push(...response.data.map(item => item.images.downsized.url));
+      if (response.meta.status === HttpStatusCode.Ok) {
+        this.gifResultSrcs.push(...response.data.map(item => item.images.fixed_width_small.url));
         this.hasMoreResults = response.pagination.total_count > (response.pagination.offset + response.pagination.count);
       }
     })
