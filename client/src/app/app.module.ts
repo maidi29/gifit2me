@@ -16,6 +16,7 @@ import { MasterViewComponent } from './components/modules/master-view/master-vie
 import { PlayerViewComponent } from './components/modules/player-view/player-view.component';
 import { CardComponent } from './components/elements/card/card.component';
 import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -41,7 +42,8 @@ const config: SocketIoConfig = {
     BrowserModule,
     AppRoutingModule,
     SocketIoModule.forRoot(config),
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

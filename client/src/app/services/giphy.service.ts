@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpStatusCode} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 
@@ -22,16 +22,18 @@ interface ResultItem {
     original: Image,
     downsized: Image
   }
-
 }
 
 export interface GiphyResult {
   data: ResultItem[],
   pagination: {
-
+    total_count: number,
+    count: number,
+    offset: number
   },
   meta: {
-
+    status: HttpStatusCode,
+    msg: string
   }
 }
 
@@ -43,8 +45,8 @@ export class GiphyService {
 
   constructor(private http: HttpClient) { }
 
-  public getGifsBySearchInput(input: string): Observable<GiphyResult>  {
-    return this.http.get<GiphyResult>(`https://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}&q=${input}&limit=10&offset=0&rating=g&lang=en`)
+  public getGifsBySearchInput(input: string, offset = 0): Observable<GiphyResult>  {
+    return this.http.get<GiphyResult>(`https://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}&q=${input}&limit=10&offset=${offset}&rating=g&lang=en`)
   }
 
   public getGifsByIds(ids: string[]): Observable<GiphyResult>  {

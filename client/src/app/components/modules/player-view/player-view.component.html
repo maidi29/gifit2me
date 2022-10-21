@@ -1,2 +1,13 @@
-<app-input [placeholder]="'Search'"></app-input>
-<app-button (click)="search('bubble')">=></app-button>
+<div class="search-input-container">
+  <app-input [placeholder]="'Search'" [(inputValue)]="searchInput"></app-input>
+  <app-button (click)="search(searchInput || '')">=></app-button>
+</div>
+
+<div class="results">
+  <ng-container *ngFor="let src of gifResultSrcs">
+    <img src="{{src}}" />
+  </ng-container>
+</div>
+<ng-container *ngIf="hasMoreResults">
+  <app-button (click)="loadMore(searchInput || '')">Load more</app-button>
+</ng-container>
