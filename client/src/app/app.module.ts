@@ -17,6 +17,8 @@ import { PlayerViewComponent } from './components/modules/player-view/player-vie
 import { CardComponent } from './components/elements/card/card.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -43,7 +45,10 @@ const config: SocketIoConfig = {
     AppRoutingModule,
     SocketIoModule.forRoot(config),
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

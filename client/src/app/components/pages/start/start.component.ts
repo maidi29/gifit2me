@@ -8,17 +8,29 @@ import {Router} from "@angular/router";
   styleUrls: ['./start.component.scss']
 })
 export class StartComponent implements OnInit {
-  movies = [];
+  private roomId?: number;
 
   constructor(private socketService: SocketService, private router: Router) { }
 
   ngOnInit(): void {
-    this.socketService.fetchMovies();
-    this.socketService.onFetchMovies().subscribe((data: any) => this.movies = data)
   }
 
   public startGame (newGame: boolean): void {
-    this.router.navigate(['/game']);
+    if (newGame) {
+      this.socketService.createRoom({
+        name: "dummy",
+        score: 0,
+        avatar: "tbd",
+        isMaster: true
+      });
+
+    }
+    this.socketService.onCreateRoom().subscribe((roomId: number) => {
+      // Todo: error handling
+      // Todo: store
+      this.roomId = roomId;
+      this.router.navigate(['/game']);
+    })
   }
 
 }
