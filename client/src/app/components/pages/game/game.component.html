@@ -1,3 +1,9 @@
+<div>
+  Players:
+  <div *ngFor="let player of players$ | async">
+    {{player.name}}
+  </div>
+</div>
 <ng-container *ngIf="ownPlayer.isMaster; else isPlayer">
   <div>
     Create a situation:

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
-interface Player {
-  isMaster: boolean
-}
+import {Store} from "@ngrx/store";
+import {selectPlayers, State} from "../../../reducers";
+import {Observable} from "rxjs";
+import {Player} from "../../../model/player.model";
 
 @Component({
   selector: 'app-game',
@@ -10,11 +10,14 @@ interface Player {
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  public ownPlayer: Player = {
-    isMaster: false
+  public ownPlayer = {
+    isMaster: false // TODO
   }
+  public players$?: Observable<Player[]>;
 
-  constructor() { }
+  constructor(private store: Store<State>) {
+    this.players$ = store.select("players");
+  }
 
   ngOnInit(): void {
   }
