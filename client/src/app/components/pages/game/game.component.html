@@ -1,22 +1,26 @@
-<div>
-  Players:
-  <div *ngFor="let player of players$ | async">
-    {{player.name}}
+<div class="page-container">
+  <div class="room-info">
+    <div>Room ID: {{roomId$ | async}}</div>
+    <div>
+      Players:
+      <div *ngFor="let player of players$ | async">
+        {{player.name}} {{player.score}}
+      </div>
+    </div>
   </div>
-</div>
-<ng-container *ngIf="ownPlayer.isMaster; else isPlayer">
-  <div>
-    Create a situation:
-    <app-input [placeholder]="'Enter'"></app-input>
-  </div>
-  <div>
-    Or choose from these situations:
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-  </div>
-</ng-container>
+  <ng-container *ngIf="ownPlayer?.isMaster; else isPlayer">
+    <div>
+      Create a situation:
+      <app-input [placeholder]="'Enter'"></app-input>
+    </div>
+    <div>
+      Or choose from these situations:
+      <app-card></app-card>
+      <app-card></app-card>
+      <app-card></app-card>
+    </div>
+  </ng-container>
 
-<ng-template #isPlayer>
-  <app-player-view></app-player-view>
-</ng-template>
+  <ng-template #isPlayer>
+    <app-player-view></app-player-view>
+</div>

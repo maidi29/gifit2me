@@ -3,4 +3,5 @@ export interface Player {
   avatar: string,
   isMaster: boolean,
   score: number,
+  isSelf?: boolean
 }

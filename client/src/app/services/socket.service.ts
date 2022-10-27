@@ -20,7 +20,15 @@ export class SocketService {
       this.socket.emit(SOCKET_EVENTS.CREATE_ROOM, player)
     }
 
-    onCreateRoom(): Observable<number> {
+    onCreateRoom(): Observable<string> {
       return this.socket.fromEvent(SOCKET_EVENTS.CREATE_ROOM);
+    }
+
+    joinRoom(player: Player, roomId: string) {
+      this.socket.emit(SOCKET_EVENTS.JOIN_ROOM, {player, roomId})
+    }
+
+    onJoinRoom(): Observable<Player[]> {
+      return this.socket.fromEvent(SOCKET_EVENTS.JOIN_ROOM);
     }
 }

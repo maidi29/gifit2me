@@ -17,6 +17,13 @@ module.exports = (io) => {
             io.sockets.adapter.rooms.get(roomId)["allPlayers"] = [player];
             socket.emit('createRoom', roomId);
         })
+
+        socket.on('joinRoom', async ({player, roomId}) => {
+            await socket.join(roomId);
+            const allPlayers = io.sockets.adapter.rooms.get(roomId)["allPlayers"];
+            socket.emit('joinRoom', allPlayers);
+            io.sockets.adapter.rooms.get(roomId)["allPlayers"].push(player);
+        })
     })
 
 
