@@ -11,12 +11,17 @@ import {Round} from "../model/round.model";
 
 export interface State {
   players: Player[],
-  activeRound?: Round,
+  activeRound: Round,
   room?: string
 }
 
 export const initialState: State = {
-  players: []
+  players: [],
+  activeRound: {
+  situation: "",
+  answers: [],
+  index: 0
+  }
 };
 
 export const selectPlayers = (state: State) => state.players;
@@ -25,8 +30,8 @@ export const selectRound = (state: State) => state.activeRound;
 export const addPlayers = createAction('Add Players', props<{nPlayer: Player[]}>());
 export const changeScore = createAction('Change Score', props<{name: string, value: number}>());
 export const setNewRound = createAction('Set New Round', props<{nRound: Round}>());
-export const updateWinner = createAction('UpdateWinner', props<{name: string}>());
-export const setRoom = createAction('setRoom', props<{room: string}>());
+export const updateWinner = createAction('Update Winner', props<{name: string}>());
+export const setRoom = createAction('Set Room', props<{room: string}>());
 
 export const playersReducer = createReducer(
   initialState.players,
@@ -42,16 +47,12 @@ export const playersReducer = createReducer(
 
 export const roundsReducer = createReducer(
   initialState.activeRound,
-  on(setNewRound, (state, {nRound}) => nRound),
+  on(setNewRound, (state, {nRound}) => ({
+    ...nRound,
+      index: state.index? state.index + 1 : 1
+  })),
   on(updateWinner, (state, {name}) => {
-    if(state) {
       return { ...state, winner: name };
-    }
-    return {
-      situation: "",
-      answers: [],
-      winner: name
-    };
   })
 );
 

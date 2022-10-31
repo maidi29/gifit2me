@@ -1,0 +1,10 @@
+@use './src/theme';
+
+.card {
+  padding: 2rem;
+  background: theme.$colorTertiary;
+  color: white;
+  display: block;
+  box-sizing: border-box;
+  cursor: pointer;
+}

@@ -7,17 +7,18 @@
         {{player.name}} {{player.score}}
       </div>
     </div>
+    <div *ngIf="(activeRound$ | async) as activeRound">Round {{activeRound.index}}</div>
   </div>
   <ng-container *ngIf="ownPlayer?.isMaster; else isPlayer">
-    <div>
-      Create a situation:
-      <app-input [placeholder]="'Enter'"></app-input>
-    </div>
-    <div>
-      Or choose from these situations:
-      <app-card></app-card>
-      <app-card></app-card>
-      <app-card></app-card>
+    <div class="master-view">
+      <div>
+        Create a situation:
+        <app-input [placeholder]="'Enter'"></app-input>
+      </div>
+      <div class="suggestions">
+        Or choose from these situations:
+        <app-card *ngFor="let situation of exampleSituations" (click)="startNewRound(situation)">{{situation}}</app-card>
+      </div>
     </div>
   </ng-container>
 

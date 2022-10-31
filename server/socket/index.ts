@@ -16,13 +16,17 @@ module.exports = (io) => {
             await socket.join(roomId);
             io.sockets.adapter.rooms.get(roomId)["allPlayers"] = [player];
             socket.emit('createRoom', roomId);
-        })
+        });
 
         socket.on('joinRoom', async ({player, roomId}) => {
             await socket.join(roomId);
             const allPlayers = io.sockets.adapter.rooms.get(roomId)["allPlayers"];
             socket.emit('joinRoom', allPlayers);
+            socket.broadcast.to(roomId).emit('playerJoin', player);
             io.sockets.adapter.rooms.get(roomId)["allPlayers"].push(player);
+        });
+        socket.on('setRound', async ({round}) => {
+            socket.broadcast.to(roomId).emit('setRound', round);
         })
     })
 

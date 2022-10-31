@@ -7,7 +7,7 @@ import {PrivacyComponent} from "./components/pages/privacy/privacy.component";
 
 const routes: Routes = [
   { path: '', component: StartComponent },
-  { path: "game", component: GameComponent },
+  { path: 'game', component: GameComponent },
   { path: 'results', component: ResultsComponent },
   { path: 'privacy', component: PrivacyComponent },
   //{ path: '**', component: PageNotFoundComponent }

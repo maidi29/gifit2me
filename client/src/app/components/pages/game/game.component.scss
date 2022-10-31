@@ -9,3 +9,14 @@
 .room-info {
   align-self: flex-start;
 }
+
+.master-view {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  .suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+}

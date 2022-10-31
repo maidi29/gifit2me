@@ -6,5 +6,6 @@ interface Answer {
 export interface Round {
   situation: string,
   answers: Answer[],
-  winner?: string
+  winner?: string,
+  index?: number,
 }
