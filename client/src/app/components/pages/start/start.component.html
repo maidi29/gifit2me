@@ -3,6 +3,11 @@
   <img src="https://media3.giphy.com/media/ywItJm3cLmPYI/giphy.gif?cid=ecf05e47q1c0l59j6q2j6ln4bcc6vlx85qx8znot8o4i1qp3&rid=giphy.gif&ct=g"/>
   <h3>Find out yourself:</h3>
   <form [formGroup]="startForm">
+    <ng-custom-avatar-generator
+      class="hide"
+      [shape]="'round'" [enableBackground]="true" [displayDownload]="false"
+      (svgUrl)="setAvatar($event)"
+    ></ng-custom-avatar-generator>
     <app-input [placeholder]="'Name'" formControlName="name" required [formGroup]="startForm" [formControlName]="'name'"></app-input>
     <!--<input class="default-input" placeholder="GameId" formControlName="gameId"/>-->
     <div class="start-game-container">

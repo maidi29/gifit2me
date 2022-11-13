@@ -23,4 +23,8 @@ button {
   &:not([disabled]):hover {
     background-color: darken(theme.$colorTertiary, 5%);
   }
+
+  &.auto-width {
+    width: auto;
+  }
 }

@@ -19,6 +19,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
+import {AvatarGeneratorModule} from "ng-custom-avatar-generator";
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -47,6 +48,7 @@ const config: SocketIoConfig = {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    AvatarGeneratorModule,
     StoreModule.forRoot(reducers, {
       metaReducers
     })

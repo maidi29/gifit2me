@@ -14,6 +14,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class StartComponent implements OnInit {
   private player?: Player;
   private gameId: string | null = null;
+  private avatar?: string;
 
   public startForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -61,7 +62,7 @@ export class StartComponent implements OnInit {
       this.player = {
         name: username,
         score: 0,
-        avatar: "tbd",
+        avatar: this.avatar,
         isMaster: newGame,
       };
       this.gameId = gameId;
@@ -69,4 +70,7 @@ export class StartComponent implements OnInit {
     }
   }
 
+  public setAvatar(event: string) {
+    this.avatar = event;
+  }
 }

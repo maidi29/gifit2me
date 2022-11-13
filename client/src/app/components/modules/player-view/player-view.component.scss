@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  align-items: center;
 }
 
 .search-input-container {
@@ -49,4 +50,8 @@
 .load-more-button {
   max-width: 500px;
   width: 100%;
+}
+
+.info {
+  text-align: center;
 }

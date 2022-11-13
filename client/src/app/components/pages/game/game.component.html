@@ -1,24 +1,28 @@
 <div class="page-container">
-  <div class="room-info">
-    <div>Room ID: {{roomId$ | async}}</div>
-    <div>
-      Players:
-      <div *ngFor="let player of players$ | async">
-        {{player.name}} {{player.score}} <ng-container *ngIf="player.isMaster">(Master)</ng-container>
+    <div class="room-info">
+      <div>Room ID: <b>{{roomId$ | async}}</b></div>
+      <div *ngIf="activeRound">Round {{activeRound.index}}</div>
+      <div class="player-info">
+        <div *ngFor="let player of players$ | async" class="player">
+          <img *ngIf="player.avatar" [src]="player.avatar" class="avatar" alt="avatar"/>
+          <div class="player-name">{{player.name}} <ng-container *ngIf="player.isMaster">(Master)</ng-container></div>
+          <div class="score">{{player.score}} points</div>
+        </div>
       </div>
-    </div>
-    <div *ngIf="activeRound">Round {{activeRound.index}}</div>
   </div>
-  <ng-container *ngIf="ownPlayer?.isMaster; else isPlayer">
-    <ng-container *ngIf="!activeRound; else masterView">
-      <app-button (click)="startNewRound()">Start!</app-button>
+  <div class="main-view">
+    <ng-container *ngIf="ownPlayer?.isMaster; else isPlayer">
+      <ng-container *ngIf="!activeRound; else masterView">
+        Has everyone joined?
+        <app-button (click)="startNewRound()" [autoWidth]="true">Start!</app-button>
+      </ng-container>
+      <ng-template #masterView>
+        <app-master-view></app-master-view>
+      </ng-template>
     </ng-container>
-    <ng-template #masterView>
-      <app-master-view></app-master-view>
-    </ng-template>
-  </ng-container>
 
-  <ng-template #isPlayer>
-    <app-player-view></app-player-view>
-  </ng-template>
+    <ng-template #isPlayer>
+      <app-player-view></app-player-view>
+    </ng-template>
+  </div>
 </div>
