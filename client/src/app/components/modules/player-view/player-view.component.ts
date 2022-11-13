@@ -1,6 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {GiphyService} from "../../../services/giphy.service";
 import {HttpStatusCode} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {Round} from "../../../model/round.model";
+import {Store} from "@ngrx/store";
+import {setNewRound, setSituation, State} from "../../../reducers";
+import {SocketService} from "../../../services/socket.service";
 
 @Component({
   selector: 'app-player-view',
@@ -12,8 +17,14 @@ export class PlayerViewComponent implements OnInit {
   public hasMoreResults = false;
   public currentIndex = 0;
   public searchInput: string = "";
+  public activeRound?: Round;
 
-  constructor(private giphyService: GiphyService) { }
+  constructor(private giphyService: GiphyService, private store: Store<State>, private socketService: SocketService) {
+    store.select("activeRound").subscribe((activeRound) => {
+      this.activeRound = activeRound;
+    });
+    this.socketService.onSetSituation().subscribe((situation)=> this.store.dispatch(setSituation({situation})));
+  }
 
   ngOnInit(): void {
   }

@@ -4,22 +4,18 @@
     <div>
       Players:
       <div *ngFor="let player of players$ | async">
-        {{player.name}} {{player.score}}
+        {{player.name}} {{player.score}} <ng-container *ngIf="player.isMaster">(Master)</ng-container>
       </div>
     </div>
-    <div *ngIf="(activeRound$ | async) as activeRound">Round {{activeRound.index}}</div>
+    <div *ngIf="activeRound">Round {{activeRound.index}}</div>
   </div>
   <ng-container *ngIf="ownPlayer?.isMaster; else isPlayer">
-    <div class="master-view">
-      <div>
-        Create a situation:
-        <app-input [placeholder]="'Enter'"></app-input>
-      </div>
-      <div class="suggestions">
-        Or choose from these situations:
-        <app-card *ngFor="let situation of exampleSituations" (click)="startNewRound(situation)">{{situation}}</app-card>
-      </div>
-    </div>
+    <ng-container *ngIf="!activeRound; else masterView">
+      <app-button (click)="startNewRound()">Start!</app-button>
+    </ng-container>
+    <ng-template #masterView>
+      <app-master-view></app-master-view>
+    </ng-template>
   </ng-container>
 
   <ng-template #isPlayer>

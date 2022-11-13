@@ -4,8 +4,8 @@ interface Answer {
 }
 
 export interface Round {
-  situation: string,
-  answers: Answer[],
+  situation?: string,
+  answers?: Answer[],
   winner?: string,
   index?: number,
 }

@@ -11,7 +11,8 @@ enum SOCKET_EVENTS {
   SEND_ANSWER = 'sendAnswer',
   CHOOSE_WINNER = 'chooseWinner',
   UPDATE_MASTER = 'updateMaster',
-  PLAYER_JOIN = 'playerJoin'
+  PLAYER_JOIN = 'playerJoin',
+  SET_SITUATION= 'setSituation'
 }
 
 
@@ -48,5 +49,13 @@ export class SocketService {
 
     onSetRound(): Observable<Round> {
       return this.socket.fromEvent(SOCKET_EVENTS.SET_ROUND);
+    }
+
+    setSituation(situation: string) {
+      this.socket.emit(SOCKET_EVENTS.SET_SITUATION, {situation});
+    }
+
+    onSetSituation(): Observable<string> {
+      return this.socket.fromEvent(SOCKET_EVENTS.SET_SITUATION);
     }
 }

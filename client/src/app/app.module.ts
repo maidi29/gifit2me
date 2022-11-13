@@ -16,7 +16,7 @@ import { MasterViewComponent } from './components/modules/master-view/master-vie
 import { PlayerViewComponent } from './components/modules/player-view/player-view.component';
 import { CardComponent } from './components/elements/card/card.component';
 import {HttpClientModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 
@@ -46,6 +46,7 @@ const config: SocketIoConfig = {
     SocketIoModule.forRoot(config),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     StoreModule.forRoot(reducers, {
       metaReducers
     })

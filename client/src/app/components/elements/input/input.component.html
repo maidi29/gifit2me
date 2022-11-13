@@ -1,2 +1,9 @@
-<input class="input" placeholder="{{placeholder}}" [(ngModel)]="inputValue"
-       (ngModelChange)="inputValueChange.emit(inputValue)"/>
+<input class="input" placeholder="{{placeholder}}" [(ngModel)]="value" (blur)="onBlur()"/>
+<div *ngIf="formControlName && formGroup?.controls?.[formControlName]?.invalid && formGroup?.controls?.[formControlName]?.touched" class="alert">
+  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['required']">
+    ⚠ Please enter a {{placeholder}}
+  </div>
+  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['minlength']">
+    ⚠ Please enter at least {{formGroup?.controls?.[formControlName]?.errors?.['minlength']?.['requiredLength']}} characters
+  </div>
+</div>

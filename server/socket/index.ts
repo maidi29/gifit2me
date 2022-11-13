@@ -25,8 +25,13 @@ module.exports = (io) => {
             socket.broadcast.to(roomId).emit('playerJoin', player);
             io.sockets.adapter.rooms.get(roomId)["allPlayers"].push(player);
         });
+
         socket.on('setRound', async ({round}) => {
             socket.broadcast.to(roomId).emit('setRound', round);
+        });
+
+        socket.on('setSituation', async ({situation}) => {
+            socket.broadcast.to(roomId).emit('setSituation', situation);
         })
     })
 

@@ -1,1 +1,23 @@
-<p>master-view works!</p>
+<div class="master-view">
+  <ng-container *ngIf="!activeRound?.situation; else results">
+    <div>
+      Create a situation:
+      <app-input [placeholder]="'Enter'"></app-input>
+    </div>
+    <div class="suggestions">
+      Or choose from these situations:
+      <app-card *ngFor="let situation of exampleSituations" (click)="setSituation(situation)">{{situation}}</app-card>
+    </div>
+  </ng-container>
+
+  <ng-template #results>
+    <h2>{{activeRound?.situation}}</h2>
+    <div *ngIf="!activeRound?.answers || activeRound?.answers?.length === 0; else answers">Waiting for players</div>
+    <ng-template #answers>
+      <ng-container *ngFor="let answer of activeRound?.answers">
+        <app-card>{{answer}}</app-card>
+      </ng-container>
+    </ng-template>
+
+  </ng-template>
+</div>

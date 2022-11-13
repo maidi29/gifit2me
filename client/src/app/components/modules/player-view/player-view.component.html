@@ -1,13 +1,21 @@
-<div class="search-input-container">
-  <app-input [placeholder]="'Search'" [(inputValue)]="searchInput"></app-input>
-  <app-button (click)="search(searchInput)">=></app-button>
-</div>
+<ng-container *ngIf="activeRound?.situation; else waiting">
+  <h2>{{activeRound?.situation}}</h2>
+  <div class="search-input-container">
+    <app-input [placeholder]="'Search'" [(ngModel)]="searchInput"></app-input>
+    <app-button (click)="search(searchInput)">=></app-button>
+  </div>
 
-<div class="results" *ngIf="gifResultSrcs.length > 0">
-  <ng-container *ngFor="let src of gifResultSrcs">
-    <img src="{{src}}" />
+  <div class="results" *ngIf="gifResultSrcs.length > 0">
+    <ng-container *ngFor="let src of gifResultSrcs">
+      <img src="{{src}}" />
+    </ng-container>
+  </div>
+  <ng-container *ngIf="hasMoreResults">
+    <app-button (click)="loadMore(searchInput)" class="load-more-button">Load more</app-button>
   </ng-container>
-</div>
-<ng-container *ngIf="hasMoreResults">
-  <app-button (click)="loadMore(searchInput)" class="load-more-button">Load more</app-button>
 </ng-container>
+
+<ng-template #waiting>
+ Wait for master
+</ng-template>
+

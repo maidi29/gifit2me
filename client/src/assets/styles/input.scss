@@ -1,7 +1,6 @@
 @use 'src/theme';
 
-
-.input {
+.default-input {
   outline: none;
   background-color: white;
   border-radius: 2rem;
@@ -12,10 +11,4 @@
   line-height: 1;
   font-family: theme.$fontFamily;
   border: none;
-}
-
-.alert {
-  margin-top: .5rem;
-  color: darken(theme.$colorTertiary,10);
-  padding: 0 2rem;
 }
