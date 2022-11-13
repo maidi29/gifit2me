@@ -12,7 +12,8 @@ enum SOCKET_EVENTS {
   CHOOSE_WINNER = 'chooseWinner',
   UPDATE_MASTER = 'updateMaster',
   PLAYER_JOIN = 'playerJoin',
-  SET_SITUATION= 'setSituation'
+  SET_SITUATION= 'setSituation',
+  JOIN_ROOM_ERROR = 'join_room_error'
 }
 
 
@@ -57,5 +58,9 @@ export class SocketService {
 
     onSetSituation(): Observable<string> {
       return this.socket.fromEvent(SOCKET_EVENTS.SET_SITUATION);
+    }
+
+    onJoinRoomError(): Observable<{ error: string }> {
+      return this.socket.fromEvent(SOCKET_EVENTS.JOIN_ROOM_ERROR);
     }
 }

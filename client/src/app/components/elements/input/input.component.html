@@ -6,4 +6,7 @@
   <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['minlength']">
     ⚠ Please enter at least {{formGroup?.controls?.[formControlName]?.errors?.['minlength']?.['requiredLength']}} characters
   </div>
+  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['playerNameAlreadyTaken']">
+    ⚠ Name already taken by another player in the room
+  </div>
 </div>

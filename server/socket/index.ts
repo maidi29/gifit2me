@@ -21,9 +21,15 @@ module.exports = (io) => {
         socket.on('joinRoom', async ({player, roomId}) => {
             await socket.join(roomId);
             const allPlayers = io.sockets.adapter.rooms.get(roomId)["allPlayers"];
-            socket.emit('joinRoom', allPlayers);
-            socket.broadcast.to(roomId).emit('playerJoin', player);
-            io.sockets.adapter.rooms.get(roomId)["allPlayers"].push(player);
+            if (allPlayers.find((pl)=>pl.name === player.name)) {
+                socket.emit("join_room_error", {
+                    error: "playerNameAlreadyTaken",
+                });
+            } else {
+                socket.emit('joinRoom', allPlayers);
+                socket.broadcast.to(roomId).emit('playerJoin', player);
+                io.sockets.adapter.rooms.get(roomId)["allPlayers"].push(player);
+            }
         });
 
         socket.on('setRound', async ({round}) => {
