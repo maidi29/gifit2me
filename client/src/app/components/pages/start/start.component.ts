@@ -17,7 +17,7 @@ export class StartComponent implements OnInit {
   private avatar?: string;
 
   public startForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     gameId: new FormControl('', [Validators.minLength(3)]),
   });
 
@@ -25,23 +25,26 @@ export class StartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.startForm.controls.name.registerOnChange(()=> {
-      this.startForm.controls.name.setErrors({'playerNameAlreadyTaken': false})
+    this.startForm.controls.name.registerOnChange(() => {
+      this.startForm.controls.name.setErrors({'alreadyTaken': false})
+    });
+    this.startForm.controls.gameId.registerOnChange(() => {
+      this.startForm.controls.gameId.setErrors({'notFound': false});
     });
 
 
     this.socketService.onJoinRoom().subscribe((players: Player[]) => {
-      if(this.player && this.gameId) {
+      if (this.player && this.gameId) {
         this.store.dispatch(addPlayers({nPlayer: [...players, {...this.player, isSelf: true}]}));
         this.store.dispatch(setRoom({room: this.gameId}));
         this.router.navigate(['/game']);
       }
     });
     this.socketService.onJoinRoomError().subscribe((error) => {
-      this.startForm.controls.name.setErrors({[error.error]: true})
+      this.startForm.get(error.controlName)?.setErrors({[error.error]: true})
     });
     this.socketService.onCreateRoom().subscribe((roomId: string) => {
-      if(this.player) {
+      if (this.player) {
         this.store.dispatch(addPlayers({nPlayer: [{...this.player, isSelf: true}]}));
         this.store.dispatch(setRoom({room: roomId}));
         this.router.navigate(['/game']);
@@ -50,7 +53,7 @@ export class StartComponent implements OnInit {
   }
 
   public startGame(newGame: boolean): void {
-    console.log(this.startForm.controls.name.errors);
+    console.log(this.startForm.controls.gameId.errors);
     newGame ? this.startForm.controls.gameId.removeValidators(Validators.required) : this.startForm.controls.gameId.addValidators(Validators.required);
     this.startForm.markAllAsTouched();
     this.startForm.controls.gameId.updateValueAndValidity();
@@ -66,7 +69,8 @@ export class StartComponent implements OnInit {
         isMaster: newGame,
       };
       this.gameId = gameId;
-      newGame ? this.socketService.createRoom(this.player) : this.socketService.joinRoom(this.player, this.gameId!);;
+      newGame ? this.socketService.createRoom(this.player) : this.socketService.joinRoom(this.player, this.gameId!);
+      ;
     }
   }
 

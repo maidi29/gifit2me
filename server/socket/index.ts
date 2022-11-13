@@ -19,16 +19,24 @@ module.exports = (io) => {
         });
 
         socket.on('joinRoom', async ({player, roomId}) => {
-            await socket.join(roomId);
-            const allPlayers = io.sockets.adapter.rooms.get(roomId)["allPlayers"];
-            if (allPlayers.find((pl)=>pl.name === player.name)) {
+            if (!io.sockets.adapter.rooms.get(roomId)) {
                 socket.emit("join_room_error", {
-                    error: "playerNameAlreadyTaken",
+                    error: "notFound",
+                    controlName: "gameId",
                 });
             } else {
-                socket.emit('joinRoom', allPlayers);
-                socket.broadcast.to(roomId).emit('playerJoin', player);
-                io.sockets.adapter.rooms.get(roomId)["allPlayers"].push(player);
+                await socket.join(roomId);
+                const allPlayers = io.sockets.adapter.rooms.get(roomId)["allPlayers"];
+                if (allPlayers.find((pl) => pl.name === player.name)) {
+                    socket.emit("join_room_error", {
+                        error: "alreadyTaken",
+                        controlName: "name",
+                    });
+                } else {
+                    socket.emit('joinRoom', allPlayers);
+                    socket.broadcast.to(roomId).emit('playerJoin', player);
+                    io.sockets.adapter.rooms.get(roomId)["allPlayers"].push(player);
+                }
             }
         });
 

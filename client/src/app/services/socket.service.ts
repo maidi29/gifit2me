@@ -60,7 +60,7 @@ export class SocketService {
       return this.socket.fromEvent(SOCKET_EVENTS.SET_SITUATION);
     }
 
-    onJoinRoomError(): Observable<{ error: string }> {
+    onJoinRoomError(): Observable<{ error: string, controlName: string }> {
       return this.socket.fromEvent(SOCKET_EVENTS.JOIN_ROOM_ERROR);
     }
 }
