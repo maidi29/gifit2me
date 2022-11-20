@@ -36,11 +36,11 @@
         gap: .5rem;
         flex: 1;
         margin-bottom: 1rem;
-        .player-name {
-          text-align: left;
-        }
-        .score {
-          margin-left: auto;
+        .info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 0.25rem;
         }
         .avatar {
           width: 60px;

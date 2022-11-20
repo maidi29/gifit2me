@@ -5,8 +5,10 @@
       <div class="player-info">
         <div *ngFor="let player of players$ | async" class="player">
           <img *ngIf="player.avatar" [src]="player.avatar" class="avatar" alt="avatar"/>
-          <div class="player-name">{{player.name}} <ng-container *ngIf="player.isMaster">(Master)</ng-container></div>
-          <div class="score">{{player.score}} points</div>
+          <div class="info">
+            <div>{{player.name}} <ng-container *ngIf="player.isMaster">(Master)</ng-container></div>
+            <div>{{player.score}} points</div>
+          </div>
         </div>
       </div>
   </div>
