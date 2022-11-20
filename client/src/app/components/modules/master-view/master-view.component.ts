@@ -14,6 +14,7 @@ import {Round} from "../../../model/round.model";
 export class MasterViewComponent implements OnInit {
   public exampleSituations = SITUATIONS.slice(0,3);
   public activeRound?: Round;
+  public situationInput: string = "";
 
   constructor(private store: Store<State>, private socketService: SocketService) {
     store.select("activeRound").subscribe((activeRound) => {

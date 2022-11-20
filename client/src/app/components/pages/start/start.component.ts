@@ -14,7 +14,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class StartComponent implements OnInit {
   private player?: Player;
   private gameId: string | null = null;
-  private avatar?: string;
+  public avatar?: string;
+  public showAvatarGenerator: boolean = false;
 
   public startForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(20)]),
@@ -53,7 +54,6 @@ export class StartComponent implements OnInit {
   }
 
   public startGame(newGame: boolean): void {
-    console.log(this.startForm.controls.gameId.errors);
     newGame ? this.startForm.controls.gameId.removeValidators(Validators.required) : this.startForm.controls.gameId.addValidators(Validators.required);
     this.startForm.markAllAsTouched();
     this.startForm.controls.gameId.updateValueAndValidity();

@@ -9,6 +9,7 @@ export class ButtonComponent implements OnInit {
   @Input() label!: string;
   @Input() disabled: boolean = false;
   @Input() autoWidth?: boolean = false;
+  @Input() secondary?: boolean = false;
   constructor() { }
 
   ngOnInit(): void {

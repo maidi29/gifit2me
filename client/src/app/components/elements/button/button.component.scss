@@ -27,4 +27,13 @@ button {
   &.auto-width {
     width: auto;
   }
+
+  &.secondary {
+    background-color: white;
+    color: theme.$colorTertiary;
+    border: 2px solid theme.$colorTertiary;
+    &:not([disabled]):hover {
+      background-color: darken(white, 5%);
+    }
+  }
 }
