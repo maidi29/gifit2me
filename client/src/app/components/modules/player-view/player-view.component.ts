@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GiphyService} from "../../../services/giphy.service";
 import {HttpStatusCode} from "@angular/common/http";
 import {Observable} from "rxjs";
@@ -7,8 +7,9 @@ import {Store} from "@ngrx/store";
 import {addAnswerGif, setNewRound, setSituation, State} from "../../../reducers";
 import {SocketService} from "../../../services/socket.service";
 import {Player} from "../../../model/player.model";
+import {NgxMasonryComponent} from "ngx-masonry";
 
-interface GifItem { small: string, src: string, id: string };
+export interface GifItem { small: string, src: string, id: string };
 
 @Component({
   selector: 'app-player-view',
@@ -24,8 +25,10 @@ export class PlayerViewComponent implements OnInit {
   public selectedGif?: GifItem;
   public players$?: Observable<Player[]>;
   public ownPlayer?: Player;
+  @ViewChild(NgxMasonryComponent) masonry?: NgxMasonryComponent;
 
-  constructor(private giphyService: GiphyService, private store: Store<State>, private socketService: SocketService) {
+
+  constructor(private giphyService: GiphyService, private store: Store<State>, private socketService: SocketService, private host: ElementRef) {
     store.select("activeRound").subscribe((activeRound) => {
       this.activeRound = activeRound;
     });
@@ -37,6 +40,12 @@ export class PlayerViewComponent implements OnInit {
     this.players$?.subscribe((players) =>
       this.ownPlayer = players.find(({isSelf}) => !!isSelf)
     );
+
+    const observer = new ResizeObserver(entries => {
+      this.masonry?.reloadItems();
+      this.masonry?.layout();
+    });
+    observer.observe(this.host.nativeElement);
   }
 
   // Todo: search on enter
@@ -68,6 +77,8 @@ export class PlayerViewComponent implements OnInit {
           src: item.images.original.url,
           id: item.id
         })));
+        this.masonry?.reloadItems();
+        this.masonry?.layout();
         this.hasMoreResults = response.pagination.total_count > (response.pagination.offset + response.pagination.count);
       }
     })

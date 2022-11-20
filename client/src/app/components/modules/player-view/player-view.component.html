@@ -5,11 +5,13 @@
     <app-button (click)="search(searchInput)">=></app-button>
   </div>
 
-  <div class="results" *ngIf="gifResultSrcs.length > 0">
-    <ng-container *ngFor="let item of gifResultSrcs">
-      <img src="{{item.small}}" class="gif" (click)="selectedGif = item"/>
-    </ng-container>
-  </div>
+  <ngx-masonry [ordered]="true" class="masonry">
+    <ng-container *ngIf="gifResultSrcs.length > 0">
+        <div ngxMasonryItem class="masonry-item" *ngFor="let item of gifResultSrcs">
+          <img masonryLazy src="{{item.small}}" class="gif" (click)="selectedGif = item" (load)="masonry?.layout()"/>
+        </div>
+      </ng-container>
+    </ngx-masonry>
   <ng-container *ngIf="hasMoreResults">
     <app-button (click)="loadMore(searchInput)" class="load-more-button">Load more</app-button>
   </ng-container>
@@ -21,9 +23,13 @@
   </div>
 </ng-template>
 
-<div *ngIf="selectedGif" class="modal">
-  <img src="{{selectedGif.src}}"/>
-  <app-button (click)="sendSelectedGif()">Send</app-button>
-  <app-button [secondary]="true" (click)="selectedGif = undefined">Discard</app-button>
+<div *ngIf="selectedGif" class="drop">
+  <div class="modal">
+    <div class="content">
+      <img src="{{selectedGif.src}}"/>
+      <app-button (click)="sendSelectedGif()">Send</app-button>
+      <app-button [secondary]="true" (click)="selectedGif = undefined">Discard</app-button>
+    </div>
+  </div>
 </div>
 

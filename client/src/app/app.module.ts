@@ -20,6 +20,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import {AvatarGeneratorModule} from "ng-custom-avatar-generator";
+import {NgxMasonryModule} from "ngx-masonry";
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -51,7 +52,8 @@ const config: SocketIoConfig = {
     AvatarGeneratorModule,
     StoreModule.forRoot(reducers, {
       metaReducers
-    })
+    }),
+    NgxMasonryModule
   ],
   providers: [],
   bootstrap: [AppComponent]
