@@ -21,7 +21,7 @@
       </div>
       <ng-template #answers>
         <ng-container *ngFor="let answer of activeRound?.answers">
-          <app-card>{{answer}}</app-card>
+          <app-card>{{answer.playerName}}<img [src]="answer.gifUrl" alt=""/></app-card>
         </ng-container>
       </ng-template>
     </div>

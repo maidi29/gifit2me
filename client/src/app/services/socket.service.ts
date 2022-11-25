@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Socket} from "ngx-socket-io";
 import {Player} from "../model/player.model";
 import {Observable} from "rxjs";
-import {Round} from "../model/round.model";
+import {Answer, Round} from "../model/round.model";
 
 enum SOCKET_EVENTS {
   CREATE_ROOM = 'createRoom',
@@ -62,5 +62,13 @@ export class SocketService {
 
     onJoinRoomError(): Observable<{ error: string, controlName: string }> {
       return this.socket.fromEvent(SOCKET_EVENTS.JOIN_ROOM_ERROR);
+    }
+
+    sendAnswerGif(answer: Answer): void {
+      this.socket.emit(SOCKET_EVENTS.SEND_ANSWER, answer);
+    }
+
+    onSendAnswerGif(): Observable<Answer> {
+      return this.socket.fromEvent(SOCKET_EVENTS.SEND_ANSWER);
     }
 }

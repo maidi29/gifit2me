@@ -8,14 +8,14 @@ interface Player {
 module.exports = (io) => {
 
     io.on('connection', socket => {
-        let roomId;
+        let localRoomId;
         socket.on('disconnect', () => console.log('disconnected'));
 
         socket.on('createRoom', async (player: Player) => {
-            roomId = (Math.floor(Math.random() * 900) + 100).toString();
-            await socket.join(roomId);
-            io.sockets.adapter.rooms.get(roomId)["allPlayers"] = [player];
-            socket.emit('createRoom', roomId);
+            localRoomId = (Math.floor(Math.random() * 900) + 100).toString();
+            await socket.join(localRoomId);
+            io.sockets.adapter.rooms.get(localRoomId)["allPlayers"] = [player];
+            socket.emit('createRoom', localRoomId);
         });
 
         socket.on('joinRoom', async ({player, roomId}) => {
@@ -25,8 +25,9 @@ module.exports = (io) => {
                     controlName: "gameId",
                 });
             } else {
-                await socket.join(roomId);
-                const allPlayers = io.sockets.adapter.rooms.get(roomId)["allPlayers"];
+                localRoomId = roomId;
+                await socket.join(localRoomId);
+                const allPlayers = io.sockets.adapter.rooms.get(localRoomId)["allPlayers"];
                 if (allPlayers.find((pl) => pl.name === player.name)) {
                     socket.emit("join_room_error", {
                         error: "alreadyTaken",
@@ -34,18 +35,22 @@ module.exports = (io) => {
                     });
                 } else {
                     socket.emit('joinRoom', allPlayers);
-                    socket.broadcast.to(roomId).emit('playerJoin', player);
-                    io.sockets.adapter.rooms.get(roomId)["allPlayers"].push(player);
+                    socket.broadcast.to(localRoomId).emit('playerJoin', player);
+                    io.sockets.adapter.rooms.get(localRoomId)["allPlayers"].push(player);
                 }
             }
         });
 
         socket.on('setRound', async ({round}) => {
-            socket.broadcast.to(roomId).emit('setRound', round);
+            socket.broadcast.to(localRoomId).emit('setRound', round);
         });
 
         socket.on('setSituation', async ({situation}) => {
-            socket.broadcast.to(roomId).emit('setSituation', situation);
+            socket.broadcast.to(localRoomId).emit('setSituation', situation);
+        })
+
+        socket.on('sendAnswer', async (answer) => {
+            socket.broadcast.to(localRoomId).emit('sendAnswer', answer);
         })
     })
 

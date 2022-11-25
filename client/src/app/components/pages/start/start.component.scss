@@ -1,19 +1,24 @@
 //@use './src/assets/styles/input';
+@use "./src/theme";
 
 :host {
-}
-
-.page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  min-height: 100%;
+  width: 100%;
+  flex: 1;
+}
 
-  .start-gif {
-    width: 100%;
-    max-width: 300px;
-  }
+h2 {
+  text-align: center;
+}
+
+.start-gif {
+  width: 100%;
+  max-width: 300px;
 }
 
 .start-game-container {
@@ -26,6 +31,13 @@
     flex: 1;
     align-self: flex-end;
   }
+}
+
+.form {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .join-game-container {

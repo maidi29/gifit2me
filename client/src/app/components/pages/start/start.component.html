@@ -1,9 +1,8 @@
-<div class="page-container">
   <h2>Play together with your friends and<br/>find the funniest GIF matching a situation.</h2>
 <!--<h2>This game is so much fun!</h2>
 <img class="start-gif" src="https://media3.giphy.com/media/ywItJm3cLmPYI/giphy.gif?cid=ecf05e47q1c0l59j6q2j6ln4bcc6vlx85qx8znot8o4i1qp3&rid=giphy.gif&ct=g"/>
 <h3>Find out yourself:</h3>-->
-  <form [formGroup]="startForm">
+  <form [formGroup]="startForm" class="form">
     <div class="player-settings">
     <img *ngIf="avatar" [src]="avatar" (click)="showAvatarGenerator = true" class="avatar"/>
     <app-input class="name-input" [placeholder]="'Name'" formControlName="name" required [formGroup]="startForm" [formControlName]="'name'"></app-input>
@@ -21,7 +20,6 @@
       </div>
     </div>
   </form>
-</div>
 <div [ngClass]="{'drop': true, 'show': showAvatarGenerator}">
   <div class="avatar-generator">
     <div class="content">

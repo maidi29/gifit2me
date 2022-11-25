@@ -25,6 +25,7 @@ export class PlayerViewComponent implements OnInit {
   public selectedGif?: GifItem;
   public players$?: Observable<Player[]>;
   public ownPlayer?: Player;
+  public sent = false;
   @ViewChild(NgxMasonryComponent) masonry?: NgxMasonryComponent;
 
 
@@ -33,7 +34,6 @@ export class PlayerViewComponent implements OnInit {
       this.activeRound = activeRound;
     });
     this.players$ = store.select("players");
-    this.socketService.onSetSituation().subscribe((situation)=> this.store.dispatch(setSituation({situation})));
   }
 
   ngOnInit(): void {
@@ -63,9 +63,11 @@ export class PlayerViewComponent implements OnInit {
 
   public sendSelectedGif() {
     if (this.selectedGif && this.ownPlayer) {
-      this.store.dispatch(addAnswerGif({playerName: this.ownPlayer.name, gifId: this.selectedGif.id }));
-      // Todo: send gif to all players
-      //this.socketService.setSituation(situation);
+      const answer = {playerName: this.ownPlayer.name, gifUrl: this.selectedGif.src }
+      this.store.dispatch(addAnswerGif({answer}));
+      this.socketService.sendAnswerGif(answer);
+      this.sent = true;
+      this.selectedGif = undefined;
     }
   }
 

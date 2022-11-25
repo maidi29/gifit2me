@@ -1,6 +1,6 @@
-interface Answer {
+export interface Answer {
   playerName: string,
-  gifId: string
+  gifUrl: string
 }
 
 export interface Round {

@@ -1,20 +1,30 @@
 <ng-container *ngIf="activeRound?.situation; else waiting">
   <h2>{{activeRound?.situation}}</h2>
-  <div class="search-input-container">
-    <app-input [placeholder]="'Search'" [(ngModel)]="searchInput"></app-input>
-    <app-button (click)="search(searchInput)">=></app-button>
-  </div>
 
-  <ngx-masonry [ordered]="true" class="masonry">
-    <ng-container *ngIf="gifResultSrcs.length > 0">
+  <ng-container *ngIf="sent; else beforeSent">
+    <ng-container *ngFor="let answer of activeRound?.answers">
+      <app-card>{{answer.playerName}}<img [src]="answer.gifUrl" alt=""/></app-card>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #beforeSent >
+    <div class="search-input-container">
+      <app-input [placeholder]="'Search'" [(ngModel)]="searchInput"></app-input>
+      <app-button (click)="search(searchInput)">=></app-button>
+    </div>
+
+    <ngx-masonry [ordered]="true" class="masonry">
+      <ng-container *ngIf="gifResultSrcs.length > 0">
         <div ngxMasonryItem class="masonry-item" *ngFor="let item of gifResultSrcs">
           <img masonryLazy src="{{item.small}}" class="gif" (click)="selectedGif = item" (load)="masonry?.layout()"/>
         </div>
       </ng-container>
     </ngx-masonry>
-  <ng-container *ngIf="hasMoreResults">
-    <app-button (click)="loadMore(searchInput)" class="load-more-button">Load more</app-button>
-  </ng-container>
+    <ng-container *ngIf="hasMoreResults">
+      <app-button (click)="loadMore(searchInput)" class="load-more-button">Load more</app-button>
+    </ng-container>
+  </ng-template>
+
 </ng-container>
 
 <ng-template #waiting >
