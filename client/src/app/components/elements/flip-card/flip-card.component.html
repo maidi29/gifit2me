@@ -1,0 +1,10 @@
+<div class="flip-card" (click)="flip()" [ngClass]="{'flipped': flipped}">
+  <div class="flip-card-inner">
+    <div class="flip-card-front">
+      <ng-content select="[front]"></ng-content>
+    </div>
+    <div class="flip-card-back">
+      <ng-content select="[back]"></ng-content>
+    </div>
+  </div>
+</div>
