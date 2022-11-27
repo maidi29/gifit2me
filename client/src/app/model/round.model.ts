@@ -1,6 +1,7 @@
 export interface Answer {
   playerName: string,
-  gifUrl: string
+  gifUrl: string,
+  flipped: boolean,
 }
 
 export interface Round {

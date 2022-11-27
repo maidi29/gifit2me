@@ -20,11 +20,12 @@ module.exports = (io) => {
 
         socket.on('joinRoom', async ({player, roomId}) => {
             if (!io.sockets.adapter.rooms.get(roomId)) {
-                socket.emit("join_room_error", {
+                socket.emit("joinRoomError", {
                     error: "notFound",
                     controlName: "gameId",
                 });
             } else {
+                // Todo: limit room size
                 localRoomId = roomId;
                 await socket.join(localRoomId);
                 const allPlayers = io.sockets.adapter.rooms.get(localRoomId)["allPlayers"];
@@ -47,11 +48,16 @@ module.exports = (io) => {
 
         socket.on('setSituation', async ({situation}) => {
             socket.broadcast.to(localRoomId).emit('setSituation', situation);
-        })
+        });
 
         socket.on('sendAnswer', async (answer) => {
             socket.broadcast.to(localRoomId).emit('sendAnswer', answer);
-        })
+        });
+
+        socket.on('flipAnswer', async (name) => {
+            console.log(name, localRoomId);
+            socket.broadcast.to(localRoomId).emit('flipAnswer', name);
+        });
     })
 
 

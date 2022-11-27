@@ -30,6 +30,7 @@ export const setSituation = createAction('Set Situation', props<{situation: stri
 export const addAnswerGif = createAction('Add Answer Gif', props<{answer: Answer}>());
 export const updateWinner = createAction('Update Winner', props<{name: string}>());
 export const setRoom = createAction('Set Room', props<{room: string}>());
+export const flipAnswer = createAction('Flip Answer', props<{playerName: string}>());
 
 export const playersReducer = createReducer(
   initialState.players,
@@ -58,6 +59,17 @@ export const roundsReducer = createReducer(
   on(addAnswerGif, (state, {answer}) => {
     const answers = state?.answers?.filter(({playerName}) => playerName !== answer.playerName) || [];
     return { ...state, answers: [...answers, answer ] };
+  }),
+  on(flipAnswer, (state, {playerName}) => {
+    const answers = state?.answers?.filter(({playerName: pN}) => playerName !== pN) || [];
+    const answerToUpdate = state?.answers?.find(({playerName: pN}) => playerName === pN);
+    if (answerToUpdate) {
+      const flippedAnswer = {...answerToUpdate};
+      flippedAnswer.flipped = true;
+      return { ...state, answers: [...answers, flippedAnswer ] };
+    } else {
+      return state;
+    }
   }),
   on(updateWinner, (state, {name}) => {
       return { ...state, winner: name };

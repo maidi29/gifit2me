@@ -13,7 +13,8 @@ enum SOCKET_EVENTS {
   UPDATE_MASTER = 'updateMaster',
   PLAYER_JOIN = 'playerJoin',
   SET_SITUATION= 'setSituation',
-  JOIN_ROOM_ERROR = 'join_room_error'
+  JOIN_ROOM_ERROR = 'joinRoomError',
+  FLIP_ANSWER = 'flipAnswer'
 }
 
 
@@ -70,5 +71,14 @@ export class SocketService {
 
     onSendAnswerGif(): Observable<Answer> {
       return this.socket.fromEvent(SOCKET_EVENTS.SEND_ANSWER);
+    }
+
+    flipAnswer(name: string): void {
+    console.log('send flip');
+      this.socket.emit(SOCKET_EVENTS.FLIP_ANSWER, name);
+    }
+
+    onFlipAnswer(): Observable<string> {
+      return this.socket.fromEvent(SOCKET_EVENTS.FLIP_ANSWER);
     }
 }

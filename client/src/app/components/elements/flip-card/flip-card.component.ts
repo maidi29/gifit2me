@@ -12,8 +12,4 @@ export class FlipCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public flip() {
-    this.flipped = !this.flipped;
-  }
-
 }

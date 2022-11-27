@@ -21,6 +21,7 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import {AvatarGeneratorModule} from "ng-custom-avatar-generator";
 import {NgxMasonryModule} from "ngx-masonry";
+import { FlipCardComponent } from './components/elements/flip-card/flip-card.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -40,7 +41,8 @@ const config: SocketIoConfig = {
     PrivacyComponent,
     MasterViewComponent,
     PlayerViewComponent,
-    CardComponent
+    CardComponent,
+    FlipCardComponent
   ],
   imports: [
     BrowserModule,

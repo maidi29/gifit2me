@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Store} from "@ngrx/store";
 import {
   addAnswerGif,
-  addPlayers,
+  addPlayers, flipAnswer,
   setNewRound,
   setSituation,
   State
@@ -44,7 +44,8 @@ export class GameComponent implements OnInit {
     const sub4 = this.socketService.onPlayerJoin().subscribe((player)=> this.store.dispatch(addPlayers({nPlayer: [player]})));
     const sub5 = this.socketService.onSendAnswerGif().subscribe((answer)=> this.store.dispatch(addAnswerGif({answer})));
     const sub6 = this.socketService.onSetSituation().subscribe((situation)=> this.store.dispatch(setSituation({situation})));
-    this.subscriptions.push(sub3,sub4,sub5,sub6)
+    const sub7 = this.socketService.onFlipAnswer().subscribe((playerName)=> this.store.dispatch(flipAnswer({playerName})));
+    this.subscriptions.push(sub3,sub4,sub5,sub6, sub7);
   }
 
   ngOnDestroy() {

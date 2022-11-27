@@ -63,7 +63,7 @@ export class PlayerViewComponent implements OnInit {
 
   public sendSelectedGif() {
     if (this.selectedGif && this.ownPlayer) {
-      const answer = {playerName: this.ownPlayer.name, gifUrl: this.selectedGif.src }
+      const answer = {playerName: this.ownPlayer.name, gifUrl: this.selectedGif.src, flipped: false }
       this.store.dispatch(addAnswerGif({answer}));
       this.socketService.sendAnswerGif(answer);
       this.sent = true;
