@@ -25,20 +25,34 @@ module.exports = (io) => {
                     controlName: "gameId",
                 });
             } else {
-                // Todo: limit room size
                 localRoomId = roomId;
-                await socket.join(localRoomId);
-                const allPlayers = io.sockets.adapter.rooms.get(localRoomId)["allPlayers"];
-                if (allPlayers.find((pl) => pl.name === player.name)) {
-                    socket.emit("join_room_error", {
-                        error: "alreadyTaken",
-                        controlName: "name",
+
+                const connectedSockets = io.sockets.adapter.rooms.get(roomId);
+                const socketRooms = Array.from(socket.rooms.values()).filter(
+                    (r) => r !== socket.id
+                );
+
+                if (socketRooms.length > 9 || (connectedSockets && connectedSockets.size >= 10 )) {
+                    socket.emit("joinRoomError", {
+                        error: "full",
+                        controlName: "gameId",
                     });
                 } else {
-                    socket.emit('joinRoom', allPlayers);
-                    socket.broadcast.to(localRoomId).emit('playerJoin', player);
-                    io.sockets.adapter.rooms.get(localRoomId)["allPlayers"].push(player);
+                    await socket.join(localRoomId);
+                    const allPlayers = io.sockets.adapter.rooms.get(localRoomId)["allPlayers"];
+                    if (allPlayers.find((pl) => pl.name === player.name)) {
+                        socket.emit("joinRoomError", {
+                            error: "alreadyTaken",
+                            controlName: "name",
+                        });
+                    } else {
+                        socket.emit('joinRoom', allPlayers);
+                        socket.broadcast.to(localRoomId).emit('playerJoin', player);
+                        io.sockets.adapter.rooms.get(localRoomId)["allPlayers"].push(player);
+                    }
                 }
+
+
             }
         });
 
@@ -55,8 +69,11 @@ module.exports = (io) => {
         });
 
         socket.on('flipAnswer', async (name) => {
-            console.log(name, localRoomId);
             socket.broadcast.to(localRoomId).emit('flipAnswer', name);
+        });
+
+        socket.on('chooseWinner', async (name) => {
+            socket.broadcast.to(localRoomId).emit('chooseWinner', name);
         });
     })
 

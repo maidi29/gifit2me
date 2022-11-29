@@ -5,7 +5,6 @@
   width: 300px;
   height: 300px;
   perspective: 1000px;
-  cursor: pointer;
   &.flipped .flip-card-inner {
     transform: rotateY(180deg);
   }

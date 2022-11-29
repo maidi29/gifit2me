@@ -34,6 +34,29 @@
 .results {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   align-items: center;
+  .container {
+    padding: 1rem;
+    border-radius: 2rem;
+    &.selected {
+      background: #ffffffaa;
+    }
+  }
+  .answers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    .winner-button {
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+app-flip-card {
+  cursor: pointer;
+  .hint {
+    color: #888;
+  }
 }

@@ -26,12 +26,19 @@ export class PlayerViewComponent implements OnInit {
   public players$?: Observable<Player[]>;
   public ownPlayer?: Player;
   public sent = false;
+  public winner?: {winnerGifUrl: string, winnerName: string}
   @ViewChild(NgxMasonryComponent) masonry?: NgxMasonryComponent;
 
 
   constructor(private giphyService: GiphyService, private store: Store<State>, private socketService: SocketService, private host: ElementRef) {
     store.select("activeRound").subscribe((activeRound) => {
       this.activeRound = activeRound;
+      if (activeRound?.winner) {
+        this.winner = {
+          winnerName: activeRound.winner,
+          winnerGifUrl: activeRound.answers?.find(({playerName}) => playerName === activeRound.winner)?.gifUrl ?? ''
+        }
+      }
     });
     this.players$ = store.select("players");
   }

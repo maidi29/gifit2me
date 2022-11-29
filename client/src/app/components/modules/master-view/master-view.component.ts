@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SITUATIONS} from "../../../constants/situations";
-import {flipAnswer, setSituation, State} from "../../../reducers";
+import {flipAnswer, setSituation, State, updateWinner} from "../../../reducers";
 import {Store} from "@ngrx/store";
 import {SocketService} from "../../../services/socket.service";
 import {Answer, Round} from "../../../model/round.model";
@@ -14,24 +14,21 @@ export class MasterViewComponent implements OnInit {
   public exampleSituations = SITUATIONS.slice(0,3);
   public activeRound?: Round;
   public situationInput: string = "";
-  public roundAnswers?: Answer[];
+  public selectedWinner?: string;
+  public winner?: {winnerGifUrl: string, winnerName: string}
 
   constructor(private store: Store<State>, private socketService: SocketService) {
     store.select("activeRound").subscribe((activeRound) => {
       this.activeRound = activeRound;
-      this.roundAnswers = activeRound?.answers;
-      /*if(activeRound?.answers) {
-        const elementsToAdd = activeRound.answers.filter((x) => !this.roundAnswers.find(y => y.playerName === x.playerName) );
-        console.log(elementsToAdd);
-        if(elementsToAdd) {
-          this.roundAnswers = [...this.roundAnswers, ...elementsToAdd];
+      if (activeRound?.winner) {
+        this.winner = {
+          winnerName: activeRound.winner,
+          winnerGifUrl: activeRound.answers?.find(({playerName}) => playerName === activeRound.winner)?.gifUrl ?? ''
         }
-        activeRound.answers.forEach((answer) => {
-          const index = this.roundAnswers.findIndex(({playerName})=> playerName === answer.playerName);
-          if(index !== -1)
-          this.roundAnswers[index].flipped = answer.flipped;
-        })
-      }*/
+        console.log(activeRound.winner);
+        console.log(this.winner);
+
+      }
     });
   }
 
@@ -48,8 +45,18 @@ export class MasterViewComponent implements OnInit {
   }
 
   public flipCard(playerName: string) {
-    this.store.dispatch(flipAnswer({playerName}));
-    this.socketService.flipAnswer(playerName);
+    if(this.activeRound?.flippedAnswers?.has(playerName)) {
+      this.selectedWinner = playerName;
+    } else {
+      this.store.dispatch(flipAnswer({playerName}));
+      this.socketService.flipAnswer(playerName);
+    }
+  }
+
+  public setWinner(playerName: string) {
+    this.store.dispatch(updateWinner({name: playerName}));
+    this.socketService.chooseWinner(playerName);
+
   }
 
 }

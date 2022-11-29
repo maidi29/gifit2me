@@ -1,5 +1,7 @@
 @use "./src/theme";
-
+:host {
+  display: block;
+}
 button {
   outline: none;
   background-color: theme.$colorTertiary;

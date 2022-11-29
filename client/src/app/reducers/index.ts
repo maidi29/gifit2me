@@ -1,18 +1,16 @@
 import {
-  ActionReducer,
-  ActionReducerMap, createAction,
-  createFeatureSelector, createReducer,
-  createSelector,
+  ActionReducerMap, createAction, createReducer,
   MetaReducer, on, props
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 import {Player} from "../model/player.model";
 import {Answer, Round} from "../model/round.model";
+import {randomInt} from "../util";
 
 export interface State {
   players: Player[],
   activeRound?: Round,
-  room?: string
+  room?: string,
 }
 
 export const initialState: State = {
@@ -58,20 +56,14 @@ export const roundsReducer = createReducer(
   }),
   on(addAnswerGif, (state, {answer}) => {
     const answers = state?.answers?.filter(({playerName}) => playerName !== answer.playerName) || [];
-    return { ...state, answers: [...answers, answer ] };
+    answers.splice(randomInt(0,answers.length), 0, answer);
+    return { ...state, answers };
   }),
   on(flipAnswer, (state, {playerName}) => {
-    const answers = state?.answers?.filter(({playerName: pN}) => playerName !== pN) || [];
-    const answerToUpdate = state?.answers?.find(({playerName: pN}) => playerName === pN);
-    if (answerToUpdate) {
-      const flippedAnswer = {...answerToUpdate};
-      flippedAnswer.flipped = true;
-      return { ...state, answers: [...answers, flippedAnswer ] };
-    } else {
-      return state;
-    }
+      return { ...state, flippedAnswers: state?.flippedAnswers?.add(playerName) ?? new Set([playerName]) };
   }),
   on(updateWinner, (state, {name}) => {
+    console.log(name);
       return { ...state, winner: name };
   })
 );

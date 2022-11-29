@@ -5,7 +5,7 @@ import {
   addPlayers, flipAnswer,
   setNewRound,
   setSituation,
-  State
+  State, updateWinner
 } from "../../../reducers";
 import {Observable, Subscription} from "rxjs";
 import {Player} from "../../../model/player.model";
@@ -45,7 +45,8 @@ export class GameComponent implements OnInit {
     const sub5 = this.socketService.onSendAnswerGif().subscribe((answer)=> this.store.dispatch(addAnswerGif({answer})));
     const sub6 = this.socketService.onSetSituation().subscribe((situation)=> this.store.dispatch(setSituation({situation})));
     const sub7 = this.socketService.onFlipAnswer().subscribe((playerName)=> this.store.dispatch(flipAnswer({playerName})));
-    this.subscriptions.push(sub3,sub4,sub5,sub6, sub7);
+    const sub8 = this.socketService.onChooseWinner().subscribe((name)=> this.store.dispatch(updateWinner({name})));
+    this.subscriptions.push(sub3,sub4,sub5,sub6,sub7,sub8);
   }
 
   ngOnDestroy() {

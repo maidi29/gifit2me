@@ -19,5 +19,8 @@
   <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['alreadyTaken']">
     ⚠ Name already taken by another player in the room
   </div>
+  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['full']">
+    ⚠ Room is full
+  </div>
 
 </div>

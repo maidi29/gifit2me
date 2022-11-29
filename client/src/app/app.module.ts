@@ -22,6 +22,7 @@ import { reducers, metaReducers } from './reducers';
 import {AvatarGeneratorModule} from "ng-custom-avatar-generator";
 import {NgxMasonryModule} from "ngx-masonry";
 import { FlipCardComponent } from './components/elements/flip-card/flip-card.component';
+import { RoundWinnerComponent } from './components/modules/round-winner/round-winner.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -42,7 +43,8 @@ const config: SocketIoConfig = {
     MasterViewComponent,
     PlayerViewComponent,
     CardComponent,
-    FlipCardComponent
+    FlipCardComponent,
+    RoundWinnerComponent
   ],
   imports: [
     BrowserModule,

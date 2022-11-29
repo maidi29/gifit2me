@@ -2,12 +2,18 @@
   <h2>{{activeRound?.situation}}</h2>
 
   <ng-container *ngIf="sent; else beforeSent">
-    <ng-container *ngFor="let answer of activeRound?.answers">
-      <app-flip-card  [flipped]="answer.flipped">
-        <div front>{{answer.playerName}}</div>
+    <ng-container *ngIf="!winner; else winnerDisplay">
+
+    <div class="answers">
+      <app-flip-card *ngFor="let answer of activeRound?.answers" [flipped]="activeRound?.flippedAnswers?.has(answer.playerName) ?? false">
         <img back [src]="answer.gifUrl" alt="" style="max-width:100%; max-height: 100%;"/>
       </app-flip-card>
+    </div>
     </ng-container>
+
+    <ng-template #winnerDisplay>
+      <app-round-winner [winnerGifUrl]="winner!.winnerGifUrl" [winnerName]="winner!.winnerName"></app-round-winner>
+    </ng-template>
   </ng-container>
 
   <ng-template #beforeSent >

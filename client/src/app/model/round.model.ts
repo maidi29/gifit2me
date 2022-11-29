@@ -1,7 +1,6 @@
 export interface Answer {
   playerName: string,
   gifUrl: string,
-  flipped: boolean,
 }
 
 export interface Round {
@@ -9,4 +8,5 @@ export interface Round {
   answers?: Answer[],
   winner?: string,
   index?: number,
+  flippedAnswers?: Set<string>
 }

@@ -81,4 +81,12 @@ export class SocketService {
     onFlipAnswer(): Observable<string> {
       return this.socket.fromEvent(SOCKET_EVENTS.FLIP_ANSWER);
     }
+
+    chooseWinner(name: string): void {
+      this.socket.emit(SOCKET_EVENTS.CHOOSE_WINNER, name);
+    }
+
+    onChooseWinner(): Observable<string> {
+      return this.socket.fromEvent(SOCKET_EVENTS.CHOOSE_WINNER);
+    }
 }
