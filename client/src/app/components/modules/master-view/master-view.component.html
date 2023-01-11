@@ -19,30 +19,33 @@
       <h2>{{activeRound?.situation}}</h2>
 
       <ng-container *ngIf="!winner; else winnerDisplay">
-
-      <div *ngIf="!activeRound?.answers || activeRound?.answers?.length === 0; else answers">
-        Waiting for players
-      </div>
-      <ng-template #answers>
-        <div class="answers">
-          <ng-container *ngFor="let answer of activeRound?.answers">
-            <div class="container" [ngClass]="{'selected': selectedWinner === answer.playerName}">
-              <app-flip-card [flipped]="activeRound?.flippedAnswers?.has(answer.playerName) ?? false" (click)="flipCard(answer.playerName)">
-                <div front class="hint">Click to reveal</div>
-                <img back [src]="answer.gifUrl" alt="" style="max-width:100%; max-height: 100%;"/>
-              </app-flip-card>
-              <app-button *ngIf="selectedWinner === answer.playerName"
-                          (click)="setWinner(answer.playerName)"
-                          class="winner-button">
-                Mark as winner
-              </app-button>
-            </div>
-          </ng-container>
+        <div *ngIf="!activeRound?.answers || activeRound?.answers?.length === 0 || ((activeRound?.answers?.length || 0) < (players?.length || 1)-1); else answers">
+          Wait until all players have chosen a GIF
         </div>
-      </ng-template>
+        <ng-template #answers>
+          <div *ngIf="((activeRound?.flippedAnswers?.size || 0) >= (players?.length || 1)-1)">
+            Click at a GIF to mark it as winner
+          </div>
+          <div class="answers">
+            <ng-container *ngFor="let answer of activeRound?.answers">
+              <div class="container" [ngClass]="{'selected': selectedWinner === answer.playerName}">
+                <app-flip-card [flipped]="activeRound?.flippedAnswers?.has(answer.playerName) ?? false" (click)="flipCard(answer.playerName)">
+                  <div front class="hint">Click to reveal</div>
+                  <img back [src]="answer.gifUrl" alt="" style="max-width:100%; max-height: 100%;"/>
+                </app-flip-card>
+                <app-button *ngIf="selectedWinner === answer.playerName"
+                            (click)="setWinner(answer.playerName)"
+                            class="winner-button">
+                  Mark as winner
+                </app-button>
+              </div>
+            </ng-container>
+          </div>
+        </ng-template>
       </ng-container>
       <ng-template #winnerDisplay>
         <app-round-winner [winnerGifUrl]="winner?.winnerGifUrl" [winnerName]="winner?.winnerName"></app-round-winner>
+        <app-button (click)="startNextRound()">Next Round!</app-button>
       </ng-template>
     </div>
 

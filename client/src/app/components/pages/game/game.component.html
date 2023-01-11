@@ -3,7 +3,9 @@
       <div *ngIf="activeRound">Round {{activeRound.index}}</div>
       <div class="player-info">
         <div *ngFor="let player of players$ | async" class="player">
-          <img *ngIf="player.avatar" [src]="player.avatar" class="avatar" alt="avatar"/>
+          <div [ngClass]= "{checked: hasAnswered(player.name) || isTrue}">
+            <img *ngIf="player.avatar" [src]="player.avatar" class="avatar" alt="avatar" />
+          </div>
           <div class="info">
             <div>{{player.name}} <ng-container *ngIf="player.name===ownPlayer?.name">(me)</ng-container><ng-container *ngIf="player.isMaster">(Master)</ng-container></div>
             <div>{{player.score}} points</div>

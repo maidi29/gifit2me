@@ -23,6 +23,7 @@ export const selectRound = (state: State) => state.activeRound;
 export const addPlayers = createAction('Add Players', props<{nPlayer: Player[]}>());
 export const addPlayer = createAction('Add Player', props<{nPlayer: Player}>());
 export const changeScore = createAction('Change Score', props<{name: string, value: number}>());
+export const updateMaster = createAction('Update Master', props<{name: string}>());
 export const setNewRound = createAction('Set New Round', props<{nRound: Round}>());
 export const setSituation = createAction('Set Situation', props<{situation: string}>());
 export const addAnswerGif = createAction('Add Answer Gif', props<{answer: Answer}>());
@@ -41,8 +42,20 @@ export const playersReducer = createReducer(
     if (playerToUpdate) {
       playerToUpdate.score = playerToUpdate.score + value;
     }
-    return [...state];
-  }
+    return [...state, ...(playerToUpdate ? [playerToUpdate] : [])];
+  }),
+  on(updateMaster, (state, {name}) => {
+      const playerNotMasterAnymoreIndex = state.findIndex((playerState) => playerState.isMaster);
+      const playerNotMasterAnymore = state[playerNotMasterAnymoreIndex];
+      const playerNowMaster =  state.find((playerState) => playerState.name === name);
+      if (playerNotMasterAnymore) {
+        playerNotMasterAnymore.isMaster = false;
+      }
+      if(playerNowMaster) {
+        playerNowMaster.isMaster = true;
+      }
+      return [...state, ...(playerNotMasterAnymore ? [playerNotMasterAnymore] : []), ...(playerNowMaster ? [playerNowMaster] : [])];
+    }
 ));
 
 export const roundsReducer = createReducer(

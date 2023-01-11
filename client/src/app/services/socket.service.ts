@@ -89,4 +89,12 @@ export class SocketService {
     onChooseWinner(): Observable<string> {
       return this.socket.fromEvent(SOCKET_EVENTS.CHOOSE_WINNER);
     }
+
+    updateMaster(name: string): void {
+      this.socket.emit(SOCKET_EVENTS.UPDATE_MASTER, name);
+    }
+
+    onUpdateMaster(): Observable<string> {
+      return this.socket.fromEvent(SOCKET_EVENTS.UPDATE_MASTER);
+    }
 }

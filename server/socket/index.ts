@@ -75,6 +75,10 @@ module.exports = (io) => {
         socket.on('chooseWinner', async (name) => {
             socket.broadcast.to(localRoomId).emit('chooseWinner', name);
         });
+
+        socket.on('updateMaster', async (name) => {
+            socket.broadcast.to(localRoomId).emit('updateMaster', name);
+        });
     })
 
 

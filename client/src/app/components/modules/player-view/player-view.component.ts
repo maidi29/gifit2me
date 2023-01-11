@@ -23,7 +23,7 @@ export class PlayerViewComponent implements OnInit {
   public searchInput: string = "";
   public activeRound?: Round;
   public selectedGif?: GifItem;
-  public players$?: Observable<Player[]>;
+  public players?: Player[];
   public ownPlayer?: Player;
   public sent = false;
   public winner?: {winnerGifUrl: string, winnerName: string}
@@ -40,14 +40,13 @@ export class PlayerViewComponent implements OnInit {
         }
       }
     });
-    this.players$ = store.select("players");
+    store.select("players").subscribe((players) => {
+      this.players = players;
+      this.ownPlayer = players.find(({isSelf}) => !!isSelf)
+    });
   }
 
   ngOnInit(): void {
-    this.players$?.subscribe((players) =>
-      this.ownPlayer = players.find(({isSelf}) => !!isSelf)
-    );
-
     const observer = new ResizeObserver(entries => {
       this.masonry?.reloadItems();
       this.masonry?.layout();

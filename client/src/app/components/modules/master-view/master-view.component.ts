@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {SITUATIONS} from "../../../constants/situations";
-import {flipAnswer, setSituation, State, updateWinner} from "../../../reducers";
+import {changeScore, flipAnswer, setNewRound, setSituation, State, updateMaster, updateWinner} from "../../../reducers";
 import {Store} from "@ngrx/store";
 import {SocketService} from "../../../services/socket.service";
 import {Answer, Round} from "../../../model/round.model";
+import {Observable} from "rxjs";
+import {Player} from "../../../model/player.model";
 
 @Component({
   selector: 'app-master-view',
@@ -16,6 +18,7 @@ export class MasterViewComponent implements OnInit {
   public situationInput: string = "";
   public selectedWinner?: string;
   public winner?: {winnerGifUrl: string, winnerName: string}
+  public players?: Player[];
 
   constructor(private store: Store<State>, private socketService: SocketService) {
     store.select("activeRound").subscribe((activeRound) => {
@@ -29,6 +32,9 @@ export class MasterViewComponent implements OnInit {
         console.log(this.winner);
 
       }
+    });
+    store.select("players").subscribe((players) => {
+      this.players = players;
     });
   }
 
@@ -55,7 +61,19 @@ export class MasterViewComponent implements OnInit {
 
   public setWinner(playerName: string) {
     this.store.dispatch(updateWinner({name: playerName}));
+    this.store.dispatch(changeScore({name: playerName, value: 1}));
     this.socketService.chooseWinner(playerName);
+  }
+
+  public startNextRound() {
+    this.store.dispatch(setNewRound({nRound: {}}));
+    this.socketService.setRound({});
+    if(this.players) {
+      const myIndex = this.players.findIndex((player) => player.isMaster);
+      const newMaster = this.players[(myIndex+1) % this.players.length];
+      this.store.dispatch(updateMaster({name:newMaster.name}));
+      this.socketService.updateMaster(newMaster.name);
+    }
 
   }
 
