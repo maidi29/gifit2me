@@ -32,13 +32,16 @@ export class PlayerViewComponent implements OnInit {
 
   constructor(private giphyService: GiphyService, private store: Store<State>, private socketService: SocketService, private host: ElementRef) {
     store.select("activeRound").subscribe((activeRound) => {
-      this.activeRound = activeRound;
-      if (activeRound?.winner) {
-        this.winner = {
-          winnerName: activeRound.winner,
-          winnerGifUrl: activeRound.answers?.find(({playerName}) => playerName === activeRound.winner)?.gifUrl ?? ''
-        }
+      if(this.activeRound?.index !== activeRound) {
+        // reset on new round
+        this.sent = false;
+        this.winner = undefined;
+        this.searchInput = "";
+        this.currentIndex = 10;
+        this.hasMoreResults = false;
+        this.gifResultSrcs = [];
       }
+      this.activeRound = activeRound;
     });
     store.select("players").subscribe((players) => {
       this.players = players;

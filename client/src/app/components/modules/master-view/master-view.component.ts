@@ -65,7 +65,7 @@ export class MasterViewComponent implements OnInit {
     this.socketService.chooseWinner(playerName);
   }
 
-  public startNextRound() {
+  public passToNextMaster() {
     this.store.dispatch(setNewRound({nRound: {}}));
     this.socketService.setRound({});
     if(this.players) {

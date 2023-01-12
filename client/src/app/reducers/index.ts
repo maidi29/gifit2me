@@ -17,8 +17,8 @@ export const initialState: State = {
   players: [],
 };
 
-export const selectPlayers = (state: State) => state.players;
-export const selectRound = (state: State) => state.activeRound;
+/*export const selectPlayers = (state: State) => state.players;
+export const selectRound = (state: State) => state.activeRound;*/
 
 export const addPlayers = createAction('Add Players', props<{nPlayer: Player[]}>());
 export const addPlayer = createAction('Add Player', props<{nPlayer: Player}>());
@@ -38,32 +38,39 @@ export const playersReducer = createReducer(
     (player) => player.name !== nPlayer.name
   ), nPlayer] )),
   on(changeScore, (state, {name, value}) => {
-    const playerToUpdate = state.find((playerState) => playerState.name === name);
-    if (playerToUpdate) {
-      playerToUpdate.score = playerToUpdate.score + value;
-    }
-    return [...state, ...(playerToUpdate ? [playerToUpdate] : [])];
+    const newState = [...state];
+    const playerToUpdate = state.findIndex((playerState) => playerState.name === name);
+    newState[playerToUpdate] = {
+      ...state[playerToUpdate],
+      score: state[playerToUpdate].score + value
+    };
+    return newState;
   }),
   on(updateMaster, (state, {name}) => {
-      const playerNotMasterAnymoreIndex = state.findIndex((playerState) => playerState.isMaster);
-      const playerNotMasterAnymore = state[playerNotMasterAnymoreIndex];
-      const playerNowMaster =  state.find((playerState) => playerState.name === name);
-      if (playerNotMasterAnymore) {
-        playerNotMasterAnymore.isMaster = false;
-      }
-      if(playerNowMaster) {
-        playerNowMaster.isMaster = true;
-      }
-      return [...state, ...(playerNotMasterAnymore ? [playerNotMasterAnymore] : []), ...(playerNowMaster ? [playerNowMaster] : [])];
+    const newState = [...state];
+    const currentMasterIndex = state.findIndex((playerState) => playerState.isMaster);
+    const newMasterIndex =  state.findIndex((playerState) => playerState.name === name);
+    newState[currentMasterIndex] = {
+      ...state[currentMasterIndex],
+      isMaster: false
+    }
+    newState[newMasterIndex] = {
+      ...state[newMasterIndex],
+      isMaster: true
+    };
+    console.log("set new master", state);
+    return newState;
     }
 ));
 
 export const roundsReducer = createReducer(
   initialState.activeRound,
-  on(setNewRound, (state, {nRound}) => ({
+  on(setNewRound, (state, {nRound}) => {
+    console.log("set new round", nRound);
+    return{
     ...nRound,
       index: state?.index? state.index + 1 : 1
-  })),
+  }}),
   on(setSituation, (state, {situation}) => {
     return { ...state, situation };
   }),
