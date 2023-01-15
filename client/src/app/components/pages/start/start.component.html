@@ -4,8 +4,14 @@
 <h3>Find out yourself:</h3>-->
   <form [formGroup]="startForm" class="form">
     <div class="player-settings">
-    <img *ngIf="avatar" [src]="avatar" (click)="showAvatarGenerator = true" class="avatar"/>
-    <app-input class="name-input" [placeholder]="'Name'" formControlName="name" required [formGroup]="startForm" [formControlName]="'name'"></app-input>
+    <img *ngIf="avatar" [src]="avatar" (click)="showAvatarGenerator = true" class="avatar" alt="avatar"/>
+    <app-input class="name-input" [placeholder]="'Name'" required [formControlName]="'name'"
+         [errorMessage]="startForm.controls['name'].invalid && startForm.controls['name'].touched ?
+         ((startForm.controls['name'].errors?.['required'] && 'Please enter a Name') ||
+          (startForm.controls['name'].errors?.['maxlength'] && 'Please enter a maximum of 50 characters') ||
+          (startForm.controls['name'].errors?.['alreadyTaken'] && 'Name is already taken by another player in the room')
+         ): undefined"
+    ></app-input>
     </div>
     <div class="start-game-container">
       <app-button (click)="startGame(true)">Start new game</app-button>
@@ -15,7 +21,14 @@
         <div class="vl"></div>
       </div>
       <div class="join-game-container">
-        <app-input [placeholder]="'Game ID'" formControlName="gameId" [formGroup]="startForm" [formControlName]="'gameId'"></app-input>
+        <app-input [placeholder]="'Game ID'" formControlName="gameId" maxlength="3"
+         [errorMessage]="startForm.controls['gameId'].invalid && startForm.controls['gameId'].touched ?
+         ((startForm.controls['gameId'].errors?.['required'] && 'Please enter a Game ID') ||
+          (startForm.controls['gameId'].errors?.['minlength'] && 'Please enter at least 3 characters') ||
+          (startForm.controls['gameId'].errors?.['notFound'] && 'No Game with this ID was found') ||
+          (startForm.controls['gameId'].errors?.['full'] && 'Room is full')
+         ): undefined"
+        ></app-input>
         <app-button (click)="startGame(false)">Join game</app-button>
       </div>
     </div>

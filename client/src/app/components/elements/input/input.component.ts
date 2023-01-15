@@ -15,8 +15,7 @@ import {ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms
 export class InputComponent implements ControlValueAccessor {
   @Input() placeholder: string = "";
   @Input() inputValue: string = "";
-  @Input() formGroup?: FormGroup;
-  @Input() formControlName?: string;
+  @Input() errorMessage?: string;
 
   constructor() { }
 

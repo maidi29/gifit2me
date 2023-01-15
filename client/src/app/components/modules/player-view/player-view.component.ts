@@ -27,25 +27,29 @@ export class PlayerViewComponent implements OnInit {
   public ownPlayer?: Player;
   public sent = false;
   public winner?: {winnerGifUrl: string, winnerName: string}
+  public gifSearchErrorMessage?: string;
+  public master = "Master";
   @ViewChild(NgxMasonryComponent) masonry?: NgxMasonryComponent;
 
 
   constructor(private giphyService: GiphyService, private store: Store<State>, private socketService: SocketService, private host: ElementRef) {
     store.select("activeRound").subscribe((activeRound) => {
-      if(this.activeRound?.index !== activeRound) {
+      if(this.activeRound?.index !== activeRound?.index) {
         // reset on new round
         this.sent = false;
         this.winner = undefined;
         this.searchInput = "";
-        this.currentIndex = 10;
+        this.currentIndex = 0;
         this.hasMoreResults = false;
         this.gifResultSrcs = [];
+        this.gifSearchErrorMessage = undefined;
       }
       this.activeRound = activeRound;
     });
     store.select("players").subscribe((players) => {
       this.players = players;
-      this.ownPlayer = players.find(({isSelf}) => !!isSelf)
+      this.ownPlayer = players.find(({isSelf}) => !!isSelf);
+      this.master = players.find(({isMaster})=>isMaster)?.name || "Master";
     });
   }
 
@@ -83,6 +87,9 @@ export class PlayerViewComponent implements OnInit {
   private fetchGifs(input: string) {
     this.giphyService.getGifsBySearchInput(input, this.currentIndex).subscribe((response) => {
       if (response.meta.status === HttpStatusCode.Ok) {
+        if(response.data.length === 0) {
+          this.gifSearchErrorMessage = "No results"
+        }
         this.gifResultSrcs.push(...response.data.map(item => ({
           small: item.images.fixed_width_small.url,
           src: item.images.original.url,
@@ -91,6 +98,8 @@ export class PlayerViewComponent implements OnInit {
         this.masonry?.reloadItems();
         this.masonry?.layout();
         this.hasMoreResults = response.pagination.total_count > (response.pagination.offset + response.pagination.count);
+      } else {
+        this.gifSearchErrorMessage = response.meta.msg;
       }
     })
   }

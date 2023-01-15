@@ -31,6 +31,7 @@ export class StartComponent implements OnInit {
     });
     this.startForm.controls.gameId.registerOnChange(() => {
       this.startForm.controls.gameId.setErrors({'notFound': false});
+      this.startForm.controls.gameId.setErrors({'full': false});
     });
 
 
@@ -70,7 +71,6 @@ export class StartComponent implements OnInit {
       };
       this.gameId = gameId;
       newGame ? this.socketService.createRoom(this.player) : this.socketService.joinRoom(this.player, this.gameId!);
-      ;
     }
   }
 

@@ -1,12 +1,15 @@
 <ng-container *ngIf="activeRound?.situation; else waiting">
-  <div *ngIf="!sent">Search a GIF for this situation:</div>
-  <h2>{{activeRound?.situation}}</h2>
+  <div class="info">
+    <ng-container *ngIf="!sent">Search a GIF for this situation:</ng-container>
+    <h2>{{activeRound?.situation}}</h2>
+  </div>
 
   <ng-container *ngIf="sent; else beforeSent">
     <ng-container *ngIf="!winner; else winnerDisplay">
       <ng-container *ngIf="(activeRound?.answers?.length || 0) < (players?.length || 1)-1; else answersGrid">
-        <div>
-          Wait until all Players have chosen a GIF and the Master starts revealing them
+        <div class="wait">
+          <div>Wait until all other players have chosen a GIF and <strong>{{master}}</strong> starts revealing them</div>
+          <img src="https://media4.giphy.com/media/pFZTlrO0MV6LoWSDXd/200w.gif" width="200" alt="wait"/>
         </div>
       </ng-container>
       <ng-template #answersGrid>
@@ -25,8 +28,11 @@
 
   <ng-template #beforeSent >
     <div class="search-input-container">
-      <app-input [placeholder]="'Search'" [(ngModel)]="searchInput"></app-input>
-      <app-button (click)="search(searchInput)">=></app-button>
+      <app-input [placeholder]="'Search'" [(ngModel)]="searchInput" (keydown.enter)="search(searchInput)"
+                 (change)="gifSearchErrorMessage=undefined" [errorMessage]="gifSearchErrorMessage"></app-input>
+      <app-button (click)="search(searchInput)">
+        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px"><g><g><path d="M493.9,465.2L385.8,357.1c30.3-36.7,48.5-83.7,48.5-135c0-117.2-95-212.2-212.2-212.2c-117.2,0-212.2,95-212.2,212.2    s95,212.2,212.2,212.2c51.3,0,98.3-18.2,135-48.5l108.1,108.1c7.9,7.9,20.8,7.9,28.7,0C501.8,486,501.8,473.1,493.9,465.2z     M222.1,391.4c-93.5,0-169.3-75.8-169.3-169.3S128.6,52.8,222.1,52.8c93.5,0,169.3,75.8,169.3,169.3S315.5,391.4,222.1,391.4z"/></g></g></svg>
+      </app-button>
     </div>
 
     <ngx-masonry [ordered]="true" class="masonry">
@@ -44,8 +50,10 @@
 </ng-container>
 
 <ng-template #waiting >
-  <div class="info">
-    Wait for master
+  <div class="info wait">
+    <div>Wait until <strong>{{master}}</strong> sets a situation</div>
+    <img src="https://media4.giphy.com/media/pFZTlrO0MV6LoWSDXd/200w.gif"
+         width="200" alt="wait"/>
   </div>
 </ng-template>
 

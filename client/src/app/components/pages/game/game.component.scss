@@ -42,6 +42,14 @@
           > * {
             white-space: nowrap;
           }
+          .name {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            &.me {
+              font-weight: bold;
+            }
+          }
         }
         .checked {
           width: 60px;

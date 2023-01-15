@@ -1,26 +1,4 @@
 <input class="input" placeholder="{{placeholder}}" [(ngModel)]="value" (blur)="onBlur()"/>
-<div
-  *ngIf="formControlName && formGroup?.controls?.[formControlName]?.invalid && formGroup?.controls?.[formControlName]?.touched"
-  class="alert">
-  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['required']">
-    ⚠ Please enter a {{placeholder}}
-  </div>
-  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['minlength']">
-    ⚠ Please enter at least {{formGroup?.controls?.[formControlName]?.errors?.['minlength']?.['requiredLength']}}
-    characters
-  </div>
-  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['maxlength']">
-    ⚠ Please enter a maximum of {{formGroup?.controls?.[formControlName]?.errors?.['maxlength']?.['requiredLength']}}
-    characters
-  </div>
-  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['notFound']">
-    ⚠ No Game with this ID was found
-  </div>
-  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['alreadyTaken']">
-    ⚠ Name already taken by another player in the room
-  </div>
-  <div *ngIf="formGroup?.controls?.[formControlName]?.errors?.['full']">
-    ⚠ Room is full
-  </div>
-
+<div *ngIf="errorMessage" class="alert">
+  ⚠ {{errorMessage}}
 </div>

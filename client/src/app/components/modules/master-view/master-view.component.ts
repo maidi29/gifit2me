@@ -3,8 +3,7 @@ import {SITUATIONS} from "../../../constants/situations";
 import {changeScore, flipAnswer, setNewRound, setSituation, State, updateMaster, updateWinner} from "../../../reducers";
 import {Store} from "@ngrx/store";
 import {SocketService} from "../../../services/socket.service";
-import {Answer, Round} from "../../../model/round.model";
-import {Observable} from "rxjs";
+import {Round} from "../../../model/round.model";
 import {Player} from "../../../model/player.model";
 
 @Component({
@@ -28,9 +27,6 @@ export class MasterViewComponent implements OnInit {
           winnerName: activeRound.winner,
           winnerGifUrl: activeRound.answers?.find(({playerName}) => playerName === activeRound.winner)?.gifUrl ?? ''
         }
-        console.log(activeRound.winner);
-        console.log(this.winner);
-
       }
     });
     store.select("players").subscribe((players) => {

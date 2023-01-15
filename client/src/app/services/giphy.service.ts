@@ -43,13 +43,15 @@ export interface GiphyResult {
 })
 export class GiphyService {
   private apiKey = environment.giphyKey;
+  private LIMIT = 10;
 
   constructor(private http: HttpClient) { }
 
   public getGifsBySearchInput(input: string, offset = 0): Observable<GiphyResult>  {
-    return this.http.get<GiphyResult>(`https://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}&q=${input}&limit=10&offset=${offset}&rating=g&lang=en`)
+    return this.http.get<GiphyResult>(`https://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}&q=${input}&limit=${this.LIMIT}&offset=${offset}&rating=g&lang=en`)
   }
 
+  // Not used by now
   public getGifsByIds(ids: string[]): Observable<GiphyResult>  {
     return this.http.get<GiphyResult>(`https://api.giphy.com/v1/gifs?api_key=${this.apiKey}&ids=${ids.join(',')}`)
   }
