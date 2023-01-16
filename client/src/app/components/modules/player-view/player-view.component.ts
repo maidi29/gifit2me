@@ -4,7 +4,7 @@ import {HttpStatusCode} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Round} from "../../../model/round.model";
 import {Store} from "@ngrx/store";
-import {addAnswerGif, setNewRound, setSituation, State} from "../../../reducers";
+import {addAnswerGif, setNewRound, setSituation, State} from "../../../reducers/reducers";
 import {SocketService} from "../../../services/socket.service";
 import {Player} from "../../../model/player.model";
 import {NgxMasonryComponent} from "ngx-masonry";

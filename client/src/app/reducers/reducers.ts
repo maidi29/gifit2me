@@ -44,7 +44,10 @@ export const playersReducer = createReducer(
     if(state[toRemoveIndex]?.isMaster) {
       const newMaster = state[(toRemoveIndex + 1) % state.length];
       const newMasterIndex = newState.findIndex((pl) => newMaster.name === pl.name);
-      newState[newMasterIndex].isMaster = true;
+      newState[newMasterIndex] = {
+        ...newState[newMasterIndex],
+        isMaster: true
+      };
     }
     return newState;
   }),
@@ -76,14 +79,11 @@ export const playersReducer = createReducer(
 export const roundsReducer = createReducer(
   initialState.activeRound,
   on(setNewRound, (state, {nRound}) => {
-    console.log("set new round", nRound);
-    return{
+    return {
     ...nRound,
       index: state?.index? state.index + 1 : 1
   }}),
-  on(setSituation, (state, {situation}) => {
-    return { ...state, situation };
-  }),
+  on(setSituation, (state, {situation}) => ({ ...state, situation })),
   on(addAnswerGif, (state, {answer}) => {
     const answers = state?.answers?.filter(({playerName}) => playerName !== answer.playerName) || [];
     answers.splice(randomInt(0,answers.length), 0, answer);
@@ -92,10 +92,7 @@ export const roundsReducer = createReducer(
   on(flipAnswer, (state, {playerName}) => {
       return { ...state, flippedAnswers: state?.flippedAnswers?.add(playerName) ?? new Set([playerName]) };
   }),
-  on(updateWinner, (state, {name}) => {
-    console.log(name);
-      return { ...state, winner: name };
-  })
+  on(updateWinner, (state, {name}) => ({ ...state, winner: name }))
 );
 
 export const roomReducer = createReducer(

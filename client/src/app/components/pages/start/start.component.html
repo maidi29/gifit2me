@@ -26,6 +26,7 @@
          ((startForm.controls['gameId'].errors?.['required'] && 'Please enter a Game ID') ||
           (startForm.controls['gameId'].errors?.['minlength'] && 'Please enter at least 3 characters') ||
           (startForm.controls['gameId'].errors?.['notFound'] && 'No Game with this ID was found') ||
+          (startForm.controls['gameId'].errors?.['started'] && 'Game has already started') ||
           (startForm.controls['gameId'].errors?.['full'] && 'Room is full')
          ): undefined"
         ></app-input>

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
 import {Router} from "@angular/router";
 import {Store} from "@ngrx/store";
-import {addPlayers, setRoom, State} from "../../../reducers";
+import {addPlayers, setRoom, State} from "../../../reducers/reducers";
 import {Player} from "../../../model/player.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
@@ -31,6 +31,7 @@ export class StartComponent implements OnInit {
     });
     this.startForm.controls.gameId.registerOnChange(() => {
       this.startForm.controls.gameId.setErrors({'notFound': false});
+      this.startForm.controls.gameId.setErrors({'started': false});
       this.startForm.controls.gameId.setErrors({'full': false});
     });
 

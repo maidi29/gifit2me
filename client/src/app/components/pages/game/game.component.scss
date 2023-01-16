@@ -18,6 +18,18 @@
   width: 100%;
 }
 
+.before-start {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
   .room-info {
     background: darken(theme.$colorPrimary, 5);
     padding: 1.5rem;

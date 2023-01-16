@@ -1,5 +1,4 @@
     <div class="room-info">
-      <div>Room ID: <b>{{roomId$ | async}}</b></div>
       <div *ngIf="activeRound">Round {{activeRound.index}}</div>
       <div class="player-info">
         <div *ngFor="let player of players$ | async" class="player">
@@ -25,8 +24,16 @@
   <div class="main-view">
     <ng-container *ngIf="ownPlayer?.isMaster; else isPlayer">
       <ng-container *ngIf="!activeRound; else masterView">
-        Has everyone joined?
-        <app-button (click)="startNewRound()" [autoWidth]="true">Start!</app-button>
+        <div class="before-start">
+          <div>
+            Share this ID with all players so they can join:
+            <h2>{{roomId$ | async}}</h2>
+          </div>
+          <div>
+            <div>Has everyone joined?</div>
+            <app-button (click)="startNewRound()" [autoWidth]="true">Start!</app-button>
+          </div>
+        </div>
       </ng-container>
       <ng-template #masterView>
         <app-master-view></app-master-view>

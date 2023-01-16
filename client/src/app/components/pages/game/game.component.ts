@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {Store} from "@ngrx/store";
 import {
   addAnswerGif,
-  addPlayers, changeScore, flipAnswer,
+  addPlayers, changeScore, flipAnswer, removePlayer,
   setNewRound,
   setSituation,
   State, updateMaster, updateWinner
-} from "../../../reducers";
+} from "../../../reducers/reducers";
 import {Observable, Subscription} from "rxjs";
 import {Player} from "../../../model/player.model";
 import {Router} from "@angular/router";
@@ -51,7 +51,8 @@ export class GameComponent implements OnInit {
       this.store.dispatch(changeScore({name, value: 1}));
     });
     const sub9 = this.socketService.onUpdateMaster().subscribe((name) => this.store.dispatch(updateMaster({name})));
-    this.subscriptions.push(sub3,sub4,sub5,sub6,sub7,sub8,sub9);
+    const sub10 = this.socketService.onPlayerLeft().subscribe((name) => this.store.dispatch(removePlayer({name})));
+    this.subscriptions.push(sub3,sub4,sub5,sub6,sub7,sub8,sub9,sub10);
   }
 
   ngOnDestroy() {

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {SITUATIONS} from "../../../constants/situations";
-import {changeScore, flipAnswer, setNewRound, setSituation, State, updateMaster, updateWinner} from "../../../reducers";
+import {changeScore, flipAnswer, setNewRound, setSituation, State, updateMaster, updateWinner} from "../../../reducers/reducers";
 import {Store} from "@ngrx/store";
 import {SocketService} from "../../../services/socket.service";
 import {Round} from "../../../model/round.model";
 import {Player} from "../../../model/player.model";
+import {generateRandom} from "../../../util/helpers";
 
 @Component({
   selector: 'app-master-view',
@@ -12,7 +13,7 @@ import {Player} from "../../../model/player.model";
   styleUrls: ['./master-view.component.scss']
 })
 export class MasterViewComponent implements OnInit {
-  public exampleSituations = SITUATIONS.slice(0,3);
+  public exampleSituations: string[] = [''];
   public activeRound?: Round;
   public situationInput: string = "";
   public selectedWinner?: string;
@@ -35,10 +36,14 @@ export class MasterViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.exampleSituations = this.getNewRandomSituations();
   }
 
-  public getNewRandomSituations(): void {
-    this.exampleSituations = SITUATIONS.slice(0,3); // get random;
+  public getNewRandomSituations(): string[] {
+    const s1 = generateRandom(SITUATIONS.length-1, []);
+    const s2 = generateRandom( SITUATIONS.length-1, [s1]);
+    const s3 = generateRandom( SITUATIONS.length-1, [s1, s2]);
+    return [SITUATIONS[s1],SITUATIONS[s2],SITUATIONS[s3]];
   }
 
   public setSituation(situation: string) {

@@ -15,6 +15,7 @@
         <div class="suggestions">
           <app-card *ngFor="let situation of exampleSituations" (click)="setSituation(situation)">{{situation}}</app-card>
         </div>
+        <app-button [secondary]="true" (click)="exampleSituations = getNewRandomSituations()">Get new situations</app-button>
       </div>
     </div>
   </ng-container>

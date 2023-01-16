@@ -18,7 +18,7 @@ import { CardComponent } from './components/elements/card/card.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import { reducers, metaReducers } from './reducers/reducers';
 import {AvatarGeneratorModule} from "ng-custom-avatar-generator";
 import {NgxMasonryModule} from "ngx-masonry";
 import { FlipCardComponent } from './components/elements/flip-card/flip-card.component';
