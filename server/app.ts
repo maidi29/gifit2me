@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const io = require('socket.io')();
-require('./socket')(io)
+require('./socket/socket')(io)
 
 const app = express();
 

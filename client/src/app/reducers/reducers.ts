@@ -22,6 +22,7 @@ export const selectRound = (state: State) => state.activeRound;*/
 
 export const addPlayers = createAction('Add Players', props<{nPlayer: Player[]}>());
 export const addPlayer = createAction('Add Player', props<{nPlayer: Player}>());
+export const removePlayer = createAction('Remove Player', props<{name: string}>());
 export const changeScore = createAction('Change Score', props<{name: string, value: number}>());
 export const updateMaster = createAction('Update Master', props<{name: string}>());
 export const setNewRound = createAction('Set New Round', props<{nRound: Round}>());
@@ -37,6 +38,16 @@ export const playersReducer = createReducer(
   on(addPlayer, (state, {nPlayer}) => ([ ...state.filter(
     (player) => player.name !== nPlayer.name
   ), nPlayer] )),
+  on(removePlayer, (state, {name}) => {
+    const newState = [...state.filter((player) => player.name !== name)];
+    const toRemoveIndex = state.findIndex((pl) => name === pl.name);
+    if(state[toRemoveIndex]?.isMaster) {
+      const newMaster = state[(toRemoveIndex + 1) % state.length];
+      const newMasterIndex = newState.findIndex((pl) => newMaster.name === pl.name);
+      newState[newMasterIndex].isMaster = true;
+    }
+    return newState;
+  }),
   on(changeScore, (state, {name, value}) => {
     const newState = [...state];
     const playerToUpdate = state.findIndex((playerState) => playerState.name === name);
@@ -58,7 +69,6 @@ export const playersReducer = createReducer(
       ...state[newMasterIndex],
       isMaster: true
     };
-    console.log("set new master", state);
     return newState;
     }
 ));

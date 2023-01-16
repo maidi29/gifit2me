@@ -9,16 +9,17 @@ module.exports = (io) => {
 
     io.on('connection', socket => {
         let localRoomId;
-        socket.on('disconnect', () => console.log('disconnected'));
+        let playerName;
 
         socket.on('createRoom', async (player: Player) => {
             localRoomId = (Math.floor(Math.random() * 900) + 100).toString();
+            playerName = player.name;
             await socket.join(localRoomId);
             io.sockets.adapter.rooms.get(localRoomId)["allPlayers"] = [player];
             socket.emit('createRoom', localRoomId);
         });
 
-        socket.on('joinRoom', async ({player, roomId}) => {
+        socket.on('joinRoom', async ({player, roomId}: {player: Player, roomId: string}) => {
             if (!io.sockets.adapter.rooms.get(roomId)) {
                 socket.emit("joinRoomError", {
                     error: "notFound",
@@ -26,6 +27,7 @@ module.exports = (io) => {
                 });
             } else {
                 localRoomId = roomId;
+                playerName = player.name;
 
                 const connectedSockets = io.sockets.adapter.rooms.get(roomId);
                 const socketRooms = Array.from(socket.rooms.values()).filter(
@@ -40,7 +42,12 @@ module.exports = (io) => {
                 } else {
                     await socket.join(localRoomId);
                     const allPlayers = io.sockets.adapter.rooms.get(localRoomId)["allPlayers"];
-                    if (allPlayers.find((pl) => pl.name === player.name)) {
+                    if (io.sockets.adapter.rooms.get(localRoomId)["started"]) {
+                        socket.emit("joinRoomError", {
+                            error: "started",
+                            controlName: "gameId",
+                        });
+                    } else if (allPlayers.find((pl) => pl.name === player.name)) {
                         socket.emit("joinRoomError", {
                             error: "alreadyTaken",
                             controlName: "name",
@@ -51,12 +58,11 @@ module.exports = (io) => {
                         io.sockets.adapter.rooms.get(localRoomId)["allPlayers"].push(player);
                     }
                 }
-
-
             }
         });
 
         socket.on('setRound', async ({round}) => {
+            io.sockets.adapter.rooms.get(localRoomId)["started"] = true;
             socket.broadcast.to(localRoomId).emit('setRound', round);
         });
 
@@ -78,6 +84,12 @@ module.exports = (io) => {
 
         socket.on('updateMaster', async (name) => {
             socket.broadcast.to(localRoomId).emit('updateMaster', name);
+        });
+
+        socket.on("disconnecting", () => {
+            const allPlayers = io.sockets.adapter.rooms.get(localRoomId)?.['allPlayers'];
+            if(allPlayers) io.sockets.adapter.rooms.get(localRoomId)['allPlayers'] = allPlayers.filter(obj => obj.playerName !== playerName);
+            socket.broadcast.in(localRoomId).emit('playerLeft', playerName);
         });
     })
 
