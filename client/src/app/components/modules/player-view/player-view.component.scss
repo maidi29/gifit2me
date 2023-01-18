@@ -73,6 +73,7 @@
     flex-direction: column;
     display: flex;
     gap: 1rem;
+    min-height: auto;
     .content {
       flex: 1;
       overflow-y: auto;
