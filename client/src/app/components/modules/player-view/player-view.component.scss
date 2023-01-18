@@ -69,11 +69,10 @@
     bottom: 0;
     margin: auto;
     width: min-content;
-    height: max-content;
+    height: fit-content;
     flex-direction: column;
     display: flex;
     gap: 1rem;
-    min-height: auto;
     .content {
       flex: 1;
       overflow-y: auto;
