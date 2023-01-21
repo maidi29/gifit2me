@@ -32,9 +32,6 @@
                width="200" alt="wait"/>
         </div>
         <ng-template #answers>
-          <div *ngIf="((activeRound?.flippedAnswers?.size || 0) >= (players?.length || 1)-1)">
-            Click at a GIF to mark it as winner
-          </div>
           <div class="answers">
             <ng-container *ngFor="let answer of activeRound?.answers">
               <div class="container" [ngClass]="{'selected': selectedWinner === answer.playerName}">
@@ -49,6 +46,9 @@
                 </app-button>
               </div>
             </ng-container>
+          </div>
+          <div *ngIf="((activeRound?.flippedAnswers?.size || 0) >= (players?.length || 1)-1)">
+            Click at a GIF to mark it as winner
           </div>
         </ng-template>
       </ng-container>

@@ -11,7 +11,6 @@ root: npm run build, npm run start
 
 ##Todo:
 - Styling and wording
-- modal iphone
 - Refactoring
 - meta content
 - Add situations
