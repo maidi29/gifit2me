@@ -20,7 +20,7 @@ import {Round} from "../../../model/round.model";
 })
 export class GameComponent implements OnInit {
   public players$?: Observable<Player[]>;
-  public roomId$?: Observable<string | undefined>;
+  public roomId?: string;
   public activeRound?: Round;
   public ownPlayer?: Player;
   subscriptions: Subscription[] = [];
@@ -28,9 +28,11 @@ export class GameComponent implements OnInit {
 
   constructor(private store: Store<State>, private router: Router, private socketService: SocketService) {
     this.players$ = store.select("players");
-    this.roomId$ = store.select("room");
     store.select("activeRound").subscribe((activeRound) => {
       this.activeRound = activeRound;
+    });
+    store.select("room").subscribe((room) => {
+      this.roomId = room;
     });
   }
 
@@ -38,9 +40,7 @@ export class GameComponent implements OnInit {
     this.players$?.subscribe((players) =>
       this.ownPlayer = players.find(({isSelf}) => !!isSelf)
     );
-    this.roomId$?.subscribe((roomId) => {
-      if(!roomId) this.router.navigate(['']);
-    });
+    if(!this.roomId) this.router.navigate(['']);
     const sub3 = this.socketService.onSetRound().subscribe((nRound)=> this.store.dispatch(setNewRound({nRound})));
     const sub4 = this.socketService.onPlayerJoin().subscribe((player)=> this.store.dispatch(addPlayers({nPlayer: [player]})));
     const sub5 = this.socketService.onSendAnswerGif().subscribe((answer)=> this.store.dispatch(addAnswerGif({answer})));

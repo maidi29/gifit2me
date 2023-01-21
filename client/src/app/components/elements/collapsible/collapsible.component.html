@@ -1,0 +1,13 @@
+<div class="collapsible">
+  <div class="header" (click)="handleOpen()">
+    <div class="title">{{header}}</div>
+    <button type="button" class="iconButton">
+      <div [ngClass]="{open: isOpen}" class="icon">
+        &#8249;
+      </div>
+    </button>
+  </div>
+  <div class="content" [ngStyle]="{height: isOpen ? content.offsetHeight+'px' : 0+'px' }">
+      <div #content><ng-content></ng-content></div>
+  </div>
+</div>

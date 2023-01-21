@@ -1,0 +1,35 @@
+@use 'src/theme';
+
+.share {
+    outline: none;
+    background-color: transparent;
+    transition: all 230ms ease-in-out;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    border: none;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: theme.$colorTertiary;
+    &:hover {
+      background-color: darken(theme.$colorPrimary, 5);
+    }
+}
+
+.message {
+  position: fixed;
+  top: 1.5rem;
+  right: -100%;
+  text-align: right;
+  padding: 1rem;
+  background: darken(theme.$colorPrimary, 5);
+  animation: slide 0.5s forwards;
+}
+
+@keyframes slide {
+  100% { right: 1.5rem; }
+}
+

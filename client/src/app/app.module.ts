@@ -23,6 +23,8 @@ import {AvatarGeneratorModule} from "ng-custom-avatar-generator";
 import {NgxMasonryModule} from "ngx-masonry";
 import { FlipCardComponent } from './components/elements/flip-card/flip-card.component';
 import { RoundWinnerComponent } from './components/modules/round-winner/round-winner.component';
+import { ShareComponent } from './components/elements/share/share.component';
+import { CollapsibleComponent } from './components/elements/collapsible/collapsible.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -44,7 +46,9 @@ const config: SocketIoConfig = {
     PlayerViewComponent,
     CardComponent,
     FlipCardComponent,
-    RoundWinnerComponent
+    RoundWinnerComponent,
+    ShareComponent,
+    CollapsibleComponent
   ],
   imports: [
     BrowserModule,

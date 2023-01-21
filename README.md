@@ -11,8 +11,8 @@ root: npm run build, npm run start
 
 ##Todo:
 - Styling and wording
-- Share functionality
-- Add How to play
+- modal iphone
 - Refactoring
+- meta content
 - Add situations
 

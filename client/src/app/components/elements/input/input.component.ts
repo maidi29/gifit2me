@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Component, Input} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Component({
   selector: 'app-input',
@@ -14,22 +14,13 @@ import {ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms
 })
 export class InputComponent implements ControlValueAccessor {
   @Input() placeholder: string = "";
-  @Input() inputValue: string = "";
   @Input() errorMessage?: string;
 
+  private innerValue: string = '';
+  public onChange: (value: string) => void = () => {};
+  public onTouch: () => void = () => {}
+
   constructor() { }
-
-  onChange: any = () => {}
-  onTouch: any = () => {}
-
-  public onBlur(): void {
-    this.onTouch();
-  }
-
-  set value(val: string){
-    this.inputValue = val;
-    this.onChange(val);
-  }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -39,8 +30,25 @@ export class InputComponent implements ControlValueAccessor {
     this.onTouch = fn;
   }
 
-  writeValue(obj: any): void {
-    this.value = obj;
+  public onBlur(): void {
+    this.onTouch();
+  }
+
+  set value(val: string){
+    if (val !== this.innerValue) {
+      this.innerValue = val;
+      this.onChange(val);
+    }
+  }
+
+  get value(): string {
+    return this.innerValue;
+  };
+
+  writeValue(val: string): void {
+    if (val !== this.innerValue) {
+      this.innerValue = val;
+    }
   }
 
 }

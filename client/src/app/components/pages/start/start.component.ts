@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Store} from "@ngrx/store";
 import {addPlayers, setRoom, State} from "../../../reducers/reducers";
 import {Player} from "../../../model/player.model";
@@ -22,10 +22,15 @@ export class StartComponent implements OnInit {
     gameId: new FormControl('', [Validators.minLength(3)]),
   });
 
-  constructor(private socketService: SocketService, private router: Router, private store: Store<State>) {
-  }
+  constructor(private socketService: SocketService, private router: Router, private store: Store<State>, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params['id']) {
+        this.startForm.controls.gameId.setValue(params['id']);
+      }
+    });
+
     this.startForm.controls.name.registerOnChange(() => {
       this.startForm.controls.name.setErrors({'alreadyTaken': false})
     });
@@ -34,7 +39,6 @@ export class StartComponent implements OnInit {
       this.startForm.controls.gameId.setErrors({'started': false});
       this.startForm.controls.gameId.setErrors({'full': false});
     });
-
 
     this.socketService.onJoinRoom().subscribe((players: Player[]) => {
       if (this.player && this.gameId) {
