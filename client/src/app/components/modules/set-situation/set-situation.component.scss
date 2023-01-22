@@ -1,0 +1,39 @@
+.set-situation {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  .create-container, .choose-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+  }
+  .suggestions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    > app-card {
+      flex: 1;
+      display: flex;
+    }
+  }
+  .input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin:auto;
+    width: 100%;
+    max-width: 700px;
+    app-input {
+      flex: 3;
+    }
+    app-button {
+      position: absolute;
+      right: 0;
+    }
+  }
+}

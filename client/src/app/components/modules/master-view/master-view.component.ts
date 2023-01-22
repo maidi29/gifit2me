@@ -1,54 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import {SITUATIONS} from "../../../constants/situations";
-import {changeScore, flipAnswer, setNewRound, setSituation, State, updateMaster, updateWinner} from "../../../reducers/reducers";
+import { Component } from '@angular/core';
+import {changeScore, flipAnswer, setNewRound, State, updateMaster, updateWinner} from "../../../reducers/reducers";
 import {Store} from "@ngrx/store";
 import {SocketService} from "../../../services/socket.service";
 import {Round} from "../../../model/round.model";
 import {Player} from "../../../model/player.model";
-import {generateRandom} from "../../../util/helpers";
+
+enum ViewState { setSituation, waitForPlayers, answersReveal, winnerDisplay}
 
 @Component({
   selector: 'app-master-view',
   templateUrl: './master-view.component.html',
   styleUrls: ['./master-view.component.scss']
 })
-export class MasterViewComponent implements OnInit {
-  public exampleSituations: string[] = [''];
+export class MasterViewComponent {
+  public ViewState = ViewState;
   public activeRound?: Round;
-  public situationInput: string = "";
   public selectedWinner?: string;
   public winner?: {winnerGifUrl: string, winnerName: string}
   public players?: Player[];
+  public state: ViewState = ViewState.setSituation;
 
   constructor(private store: Store<State>, private socketService: SocketService) {
+    store.select("players").subscribe((players) => {
+      this.players = players;
+    });
     store.select("activeRound").subscribe((activeRound) => {
       this.activeRound = activeRound;
+      if(activeRound?.situation) {
+        this.state = ViewState.waitForPlayers;
+      }
+      if(activeRound?.answers && this.players && activeRound.answers.length >= this.players.length-1) {
+        this.state = ViewState.answersReveal;
+      }
       if (activeRound?.winner) {
         this.winner = {
           winnerName: activeRound.winner,
           winnerGifUrl: activeRound.answers?.find(({playerName}) => playerName === activeRound.winner)?.gifUrl ?? ''
-        }
+        };
+        this.state = ViewState.winnerDisplay;
       }
     });
-    store.select("players").subscribe((players) => {
-      this.players = players;
-    });
-  }
-
-  ngOnInit(): void {
-    this.exampleSituations = this.getNewRandomSituations();
-  }
-
-  public getNewRandomSituations(): string[] {
-    const s1 = generateRandom(SITUATIONS.length-1, []);
-    const s2 = generateRandom( SITUATIONS.length-1, [s1]);
-    const s3 = generateRandom( SITUATIONS.length-1, [s1, s2]);
-    return [SITUATIONS[s1],SITUATIONS[s2],SITUATIONS[s3]];
-  }
-
-  public setSituation(situation: string) {
-    this.store.dispatch(setSituation({situation}));
-    this.socketService.setSituation(situation);
   }
 
   public flipCard(playerName: string) {

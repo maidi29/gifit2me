@@ -1,0 +1,11 @@
+<div class="drop" [ngClass]="{'show': show}">
+  <div class="avatar-generator">
+    <div class="content">
+      <ng-custom-avatar-generator
+        [shape]="'round'" [enableBackground]="true" [displayDownload]="false"
+        (svgUrl)="setAvatar($event)"
+      ></ng-custom-avatar-generator>
+    </div>
+    <app-button (click)="save()">Save</app-button>
+  </div>
+</div>

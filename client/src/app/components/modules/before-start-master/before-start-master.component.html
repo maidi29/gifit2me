@@ -1,0 +1,13 @@
+<div class="before-start">
+  <div class="container">
+    Share this ID with all players so they can join:
+    <div class="share">
+      <h2>{{roomId}}</h2>
+      <app-share *ngIf="roomId" [gameId]="roomId"></app-share>
+    </div>
+  </div>
+  <div class="container">
+    <div>Has everyone joined?</div>
+    <app-button (click)="startNewRound()" [autoWidth]="true">Start!</app-button>
+  </div>
+</div>
