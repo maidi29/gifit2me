@@ -3,21 +3,7 @@ import {Socket} from "ngx-socket-io";
 import {Player} from "../model/player.model";
 import {Observable} from "rxjs";
 import {Answer, Round} from "../model/round.model";
-
-enum SOCKET_EVENTS {
-  CREATE_ROOM = 'createRoom',
-  JOIN_ROOM = 'joinRoom',
-  SET_ROUND = 'setRound',
-  SEND_ANSWER = 'sendAnswer',
-  CHOOSE_WINNER = 'chooseWinner',
-  UPDATE_MASTER = 'updateMaster',
-  PLAYER_JOIN = 'playerJoin',
-  SET_SITUATION= 'setSituation',
-  JOIN_ROOM_ERROR = 'joinRoomError',
-  FLIP_ANSWER = 'flipAnswer',
-  PLAYER_LEFT = 'playerLeft',
-}
-
+import {SOCKET_EVENTS} from "../../../../shared/socketEvents";
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +24,7 @@ export class SocketService {
       this.socket.emit(SOCKET_EVENTS.JOIN_ROOM, {player, roomId})
     }
 
-    onJoinRoom(): Observable<Player[]> {
+    onJoinRoom(): Observable<{players: Player[], roomId: string}> {
       return this.socket.fromEvent(SOCKET_EVENTS.JOIN_ROOM);
     }
 

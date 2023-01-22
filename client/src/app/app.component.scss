@@ -1,3 +1,6 @@
+@use '../theme';
+@use '../mixins';
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -8,6 +11,20 @@
   min-height: 100vh;
   max-width: 1800px;
   margin: auto;
+
+  h1 {
+    font-family: "Game of Squids", theme.$fontFamily, sans-serif;
+    font-size: 3.5rem;
+    text-align: center;
+    @include mixins.stroke(5, #fff);
+    color: theme.$colorTertiary;
+    a {
+      color: theme.$colorTertiary;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
 }
 
 .router-outlet {

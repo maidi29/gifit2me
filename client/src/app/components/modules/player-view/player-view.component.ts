@@ -1,48 +1,45 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {GiphyService} from "../../../services/giphy.service";
-import {HttpStatusCode} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Component} from '@angular/core';
 import {Round} from "../../../model/round.model";
 import {Store} from "@ngrx/store";
-import {addAnswerGif, setNewRound, setSituation, State} from "../../../reducers/reducers";
+import {addAnswerGif, State} from "../../../reducers/reducers";
 import {SocketService} from "../../../services/socket.service";
 import {Player} from "../../../model/player.model";
-import {NgxMasonryComponent} from "ngx-masonry";
+import {GifItem} from "../gif-search/gif-search.component";
 
-export interface GifItem { small: string, src: string, id: string };
+enum ViewState { noSituation, searchGifs, waitForOthers, answersReveal, winnerDisplay}
 
 @Component({
   selector: 'app-player-view',
   templateUrl: './player-view.component.html',
   styleUrls: ['./player-view.component.scss']
 })
-export class PlayerViewComponent implements OnInit {
-  public gifResultSrcs: GifItem[] = [];
-  public hasMoreResults = false;
-  public currentIndex = 0;
-  public searchInput: string = "";
+export class PlayerViewComponent {
+  public ViewState = ViewState;
   public activeRound?: Round;
-  public selectedGif?: GifItem;
   public players?: Player[];
   public ownPlayer?: Player;
   public sent = false;
   public winner?: {winnerGifUrl: string, winnerName: string}
-  public gifSearchErrorMessage?: string;
   public master = "Master";
-  @ViewChild(NgxMasonryComponent) masonry?: NgxMasonryComponent;
+  public state: ViewState = ViewState.noSituation;
 
-
-  constructor(private giphyService: GiphyService, private store: Store<State>, private socketService: SocketService, private host: ElementRef) {
+  constructor(private store: Store<State>, private socketService: SocketService) {
     store.select("activeRound").subscribe((activeRound) => {
       if(this.activeRound?.index !== activeRound?.index) {
         // reset on new round
         this.sent = false;
         this.winner = undefined;
-        this.searchInput = "";
-        this.currentIndex = 0;
-        this.hasMoreResults = false;
-        this.gifResultSrcs = [];
-        this.gifSearchErrorMessage = undefined;
+      }
+      if(!activeRound?.situation) {
+        this.state = ViewState.noSituation;
+      } else if(!this.sent) {
+        this.state = ViewState.searchGifs;
+      } else if(activeRound?.answers && this.players && activeRound.answers.length >= this.players.length-1) {
+        this.state = ViewState.waitForOthers;
+      } else if(!activeRound?.winner) {
+        this.state = ViewState.answersReveal
+      } else if(activeRound?.winner) {
+        this.state = ViewState.winnerDisplay
       }
       this.activeRound = activeRound;
     });
@@ -53,55 +50,13 @@ export class PlayerViewComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    const observer = new ResizeObserver(entries => {
-      this.masonry?.reloadItems();
-      this.masonry?.layout();
-    });
-    observer.observe(this.host.nativeElement);
-  }
-
-  // Todo: search on enter
-  // Todo: error handling for gif request
-  public search(input: string) {
-    this.currentIndex = 0;
-    this.gifResultSrcs = [];
-    this.fetchGifs(input);
-  }
-
-  public loadMore(input: string) {
-    this.currentIndex += 10;
-    this.fetchGifs(input);
-  }
-
-  public sendSelectedGif() {
-    if (this.selectedGif && this.ownPlayer) {
-      const answer = {playerName: this.ownPlayer.name, gifUrl: this.selectedGif.src, flipped: false }
+  public sendSelectedGif(gifItem: GifItem) {
+    if (gifItem && this.ownPlayer) {
+      const answer = {playerName: this.ownPlayer.name, gifUrl: gifItem.src, flipped: false }
       this.store.dispatch(addAnswerGif({answer}));
       this.socketService.sendAnswerGif(answer);
       this.sent = true;
-      this.selectedGif = undefined;
     }
-  }
-
-  private fetchGifs(input: string) {
-    this.giphyService.getGifsBySearchInput(input, this.currentIndex).subscribe((response) => {
-      if (response.meta.status === HttpStatusCode.Ok) {
-        if(response.data.length === 0) {
-          this.gifSearchErrorMessage = "No results"
-        }
-        this.gifResultSrcs.push(...response.data.map(item => ({
-          small: item.images.fixed_width_small.url,
-          src: item.images.original.url,
-          id: item.id
-        })));
-        this.masonry?.reloadItems();
-        this.masonry?.layout();
-        this.hasMoreResults = response.pagination.total_count > (response.pagination.offset + response.pagination.count);
-      } else {
-        this.gifSearchErrorMessage = response.meta.msg;
-      }
-    })
   }
 
 }

@@ -1,13 +1,4 @@
 @use 'theme';
-@use 'mixins';
-
-/*@font-face {
-  font-family: Raleway;
-  src: url(./assets/fonts/Raleway-Regular.ttf);
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}*/
 
 @font-face {
   font-family: Comfortaa;
@@ -36,23 +27,12 @@ html {
   }
 }
 
-html, body {
-}
-
 body {
   margin: 0;
   font-family: theme.$fontFamily;
   background-color: theme.$colorPrimary;
   color: theme.$colorSecondary;
   overflow-x: hidden;
-}
-
-h1   {
-  font-family: "Game of Squids", theme.$fontFamily, sans-serif;
-  font-size: 3.5rem;
-  text-align: center;
-  @include mixins.stroke(5, #fff);
-  color: theme.$colorTertiary;
 }
 
 h1, h2, h3, h4, h5, h6 {

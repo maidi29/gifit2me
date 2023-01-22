@@ -1,0 +1,46 @@
+.search-input-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+
+  app-input {
+    flex: 3;
+  }
+  app-button {
+    position: absolute;
+    right: 0;
+  }
+}
+
+.load-more-button {
+  max-width: 500px;
+  width: 100%;
+}
+
+.masonry {
+  width: 100%;
+  .masonry-item {
+    width: 20%;
+    @media (max-width: 1200px) {
+      width: 25%;
+    }
+    @media (max-width: 1000px) {
+      width: 33.33%;
+    }
+    @media (max-width: 800px) {
+      width: 50%;
+    }
+    @media (max-width: 550px) {
+      width: 100%;
+    }
+    .gif {
+      width: 100%;
+      cursor: pointer;
+      padding: .25rem;
+    }
+  }
+}

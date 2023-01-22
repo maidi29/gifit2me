@@ -1,15 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
-
+export class CardComponent {
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

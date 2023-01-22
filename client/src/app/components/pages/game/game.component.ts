@@ -19,15 +19,20 @@ import {Round} from "../../../model/round.model";
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  public players$?: Observable<Player[]>;
   public roomId?: string;
   public activeRound?: Round;
   public ownPlayer?: Player;
-  subscriptions: Subscription[] = [];
-  public isTrue: boolean = false;
+  public players?: Player[]
 
-  constructor(private store: Store<State>, private router: Router, private socketService: SocketService) {
-    this.players$ = store.select("players");
+  private subscriptions: Subscription[] = [];
+
+  constructor(private store: Store<State>,
+              private router: Router,
+              private socketService: SocketService) {
+    store.select("players").subscribe((players) => {
+      this.players = players;
+      this.ownPlayer = players.find(({isSelf}) => !!isSelf)
+    });
     store.select("activeRound").subscribe((activeRound) => {
       this.activeRound = activeRound;
     });
@@ -37,9 +42,6 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.players$?.subscribe((players) =>
-      this.ownPlayer = players.find(({isSelf}) => !!isSelf)
-    );
     if(!this.roomId) this.router.navigate(['']);
     const sub3 = this.socketService.onSetRound().subscribe((nRound)=> this.store.dispatch(setNewRound({nRound})));
     const sub4 = this.socketService.onPlayerJoin().subscribe((player)=> this.store.dispatch(addPlayers({nPlayer: [player]})));
@@ -57,15 +59,5 @@ export class GameComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe())
-  }
-
-  public startNewRound() {
-    this.store.dispatch(setNewRound({nRound: {}}));
-    this.socketService.setRound({})
-  }
-
-  public hasAnswered(name: string): boolean {
-    return ((this.activeRound?.answers?.find(({playerName})=> playerName === name)) !== undefined) &&
-      (!this.activeRound.flippedAnswers || this.activeRound.flippedAnswers?.size === 0);
   }
 }

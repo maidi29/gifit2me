@@ -5,6 +5,7 @@ import {Store} from "@ngrx/store";
 import {addPlayers, setRoom, State} from "../../../reducers/reducers";
 import {Player} from "../../../model/player.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ROUTES} from "../../../app-routing.module";
 
 @Component({
   selector: 'app-start',
@@ -13,7 +14,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class StartComponent implements OnInit {
   private player?: Player;
-  private gameId: string | null = null;
   public avatar?: string;
   public showAvatarGenerator: boolean = false;
 
@@ -22,7 +22,11 @@ export class StartComponent implements OnInit {
     gameId: new FormControl('', [Validators.minLength(3)]),
   });
 
-  constructor(private socketService: SocketService, private router: Router, private store: Store<State>, private route: ActivatedRoute) {}
+  constructor(private socketService: SocketService,
+              private router: Router,
+              private store: Store<State>,
+              private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -30,32 +34,14 @@ export class StartComponent implements OnInit {
         this.startForm.controls.gameId.setValue(params['id']);
       }
     });
+    this.listenToJoinError();
+    this.resetAllErrorsOnChange();
 
-    this.startForm.controls.name.registerOnChange(() => {
-      this.startForm.controls.name.setErrors({'alreadyTaken': false})
-    });
-    this.startForm.controls.gameId.registerOnChange(() => {
-      this.startForm.controls.gameId.setErrors({'notFound': false});
-      this.startForm.controls.gameId.setErrors({'started': false});
-      this.startForm.controls.gameId.setErrors({'full': false});
-    });
-
-    this.socketService.onJoinRoom().subscribe((players: Player[]) => {
-      if (this.player && this.gameId) {
-        this.store.dispatch(addPlayers({nPlayer: [...players, {...this.player, isSelf: true}]}));
-        this.store.dispatch(setRoom({room: this.gameId}));
-        this.router.navigate(['/game']);
-      }
-    });
-    this.socketService.onJoinRoomError().subscribe((error) => {
-      this.startForm.get(error.controlName)?.setErrors({[error.error]: true})
+    this.socketService.onJoinRoom().subscribe(({players, roomId}) => {
+      this.dispatchStart(roomId, players)
     });
     this.socketService.onCreateRoom().subscribe((roomId: string) => {
-      if (this.player) {
-        this.store.dispatch(addPlayers({nPlayer: [{...this.player, isSelf: true}]}));
-        this.store.dispatch(setRoom({room: roomId}));
-        this.router.navigate(['/game']);
-      }
+      this.dispatchStart(roomId)
     });
   }
 
@@ -66,7 +52,6 @@ export class StartComponent implements OnInit {
 
     const username = this.startForm.controls.name.value;
     const gameId = this.startForm.controls.gameId.value;
-
     if (this.startForm.valid && username) {
       this.player = {
         name: username,
@@ -74,12 +59,36 @@ export class StartComponent implements OnInit {
         avatar: this.avatar,
         isMaster: newGame,
       };
-      this.gameId = gameId;
-      newGame ? this.socketService.createRoom(this.player) : this.socketService.joinRoom(this.player, this.gameId!);
+      newGame ? this.socketService.createRoom(this.player) : this.socketService.joinRoom(this.player, gameId!);
     }
   }
 
-  public setAvatar(event: string) {
-    this.avatar = event;
+  public updateAvatar(newAvatar: string) {
+    this.avatar = newAvatar;
+  }
+
+  private dispatchStart(roomId: string, players: Player[] = []) {
+    if (this.player) {
+      this.store.dispatch(addPlayers({nPlayer: [...players, {...this.player, isSelf: true}]}));
+      this.store.dispatch(setRoom({room: roomId}));
+      this.router.navigate([ROUTES.GAME]);
+    }
+  }
+
+  private resetAllErrorsOnChange() {
+    this.startForm.controls.name.registerOnChange(() => {
+      this.startForm.controls.name.setErrors({'alreadyTaken': false})
+    });
+    this.startForm.controls.gameId.registerOnChange(() => {
+      this.startForm.controls.gameId.setErrors({'notFound': false});
+      this.startForm.controls.gameId.setErrors({'started': false});
+      this.startForm.controls.gameId.setErrors({'full': false});
+    });
+  }
+
+  private listenToJoinError() {
+    this.socketService.onJoinRoomError().subscribe((error) => {
+      this.startForm.get(error.controlName)?.setErrors({[error.error]: true})
+    });
   }
 }

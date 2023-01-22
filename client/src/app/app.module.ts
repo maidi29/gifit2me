@@ -15,19 +15,25 @@ import { PrivacyComponent } from './components/pages/privacy/privacy.component';
 import { MasterViewComponent } from './components/modules/master-view/master-view.component';
 import { PlayerViewComponent } from './components/modules/player-view/player-view.component';
 import { CardComponent } from './components/elements/card/card.component';
-import {HttpClientModule} from "@angular/common/http";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers/reducers';
-import {AvatarGeneratorModule} from "ng-custom-avatar-generator";
-import {NgxMasonryModule} from "ngx-masonry";
+import { AvatarGeneratorModule } from "ng-custom-avatar-generator";
+import { NgxMasonryModule } from "ngx-masonry";
 import { FlipCardComponent } from './components/elements/flip-card/flip-card.component';
 import { RoundWinnerComponent } from './components/modules/round-winner/round-winner.component';
 import { ShareComponent } from './components/elements/share/share.component';
 import { CollapsibleComponent } from './components/elements/collapsible/collapsible.component';
+import { AvatarGeneratorComponent } from './components/modules/avatar-generator/avatar-generator.component';
+import { GameInfoComponent } from './components/modules/game-info/game-info.component';
+import { BeforeStartMasterComponent } from './components/modules/before-start-master/before-start-master.component';
+import { SetSituationComponent } from './components/modules/set-situation/set-situation.component';
+import { ModalComponent } from './components/elements/modal/modal.component';
+import { GifSearchComponent } from './components/modules/gif-search/gif-search.component';
 
 const config: SocketIoConfig = {
-  url: environment.socketUrl, // socket server url;
+  url: environment.socketUrl,
   options: {
     transports: ['websocket']
   }
@@ -48,7 +54,13 @@ const config: SocketIoConfig = {
     FlipCardComponent,
     RoundWinnerComponent,
     ShareComponent,
-    CollapsibleComponent
+    CollapsibleComponent,
+    AvatarGeneratorComponent,
+    GameInfoComponent,
+    BeforeStartMasterComponent,
+    SetSituationComponent,
+    ModalComponent,
+    GifSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +76,6 @@ const config: SocketIoConfig = {
     NgxMasonryModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }
