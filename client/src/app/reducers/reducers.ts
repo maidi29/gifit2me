@@ -11,6 +11,7 @@ export interface State {
   players: Player[],
   activeRound?: Round,
   room?: string,
+  numberRounds?: number
 }
 
 export const initialState: State = {
@@ -31,6 +32,7 @@ export const addAnswerGif = createAction('Add Answer Gif', props<{answer: Answer
 export const updateWinner = createAction('Update Winner', props<{name: string}>());
 export const setRoom = createAction('Set Room', props<{room: string}>());
 export const flipAnswer = createAction('Flip Answer', props<{playerName: string}>());
+export const setNumberRounds = createAction('Set Number Rounds', props<{number: number}>());
 
 export const playersReducer = createReducer(
   initialState.players,
@@ -100,10 +102,16 @@ export const roomReducer = createReducer(
   on(setRoom, (state, {room}) => room),
 );
 
+export const numberRoundsReducer = createReducer(
+  initialState.numberRounds,
+  on(setNumberRounds, (state, {number}) => number),
+);
+
 export const reducers: ActionReducerMap<State> = {
   players: playersReducer,
   activeRound: roundsReducer,
-  room:  roomReducer
+  room:  roomReducer,
+  numberRounds: numberRoundsReducer
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

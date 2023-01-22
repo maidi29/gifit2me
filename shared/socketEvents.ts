@@ -10,4 +10,5 @@ export enum SOCKET_EVENTS {
     JOIN_ROOM_ERROR = 'joinRoomError',
     FLIP_ANSWER = 'flipAnswer',
     PLAYER_LEFT = 'playerLeft',
+    SET_NUMBER_ROUNDS = 'setNumberRounds',
 }

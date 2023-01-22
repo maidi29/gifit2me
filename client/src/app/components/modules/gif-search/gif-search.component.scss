@@ -1,3 +1,10 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  align-items: center;
+}
 .search-input-container {
   display: flex;
   align-items: flex-start;

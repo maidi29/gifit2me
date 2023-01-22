@@ -1,4 +1,4 @@
-<app-game-info [players]="players" [ownPlayer]="ownPlayer" [activeRound]="activeRound"></app-game-info>
+<app-game-info [players]="players" [activeRound]="activeRound" [numberRounds]="numberRounds"></app-game-info>
 <div class="main-view">
   <ng-container *ngIf="ownPlayer?.isMaster; else playerView">
     <ng-container *ngIf="!activeRound; else masterView">

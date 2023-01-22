@@ -7,10 +7,10 @@
 
 <ng-container *ngIf="state === ViewState.searchGifs">
   <div class="info">
-    <ng-container *ngIf="!sent">Search a GIF for this situation:</ng-container>
+    Search a GIF for this situation:
     <h2>{{activeRound?.situation}}</h2>
   </div>
-  <app-gif-search (sendGif)="sendSelectedGif($event)" )></app-gif-search>
+  <app-gif-search (sendGif)="sendSelectedGif($event)"></app-gif-search>
 </ng-container>
 
 <ng-container *ngIf="state === ViewState.waitForOthers">

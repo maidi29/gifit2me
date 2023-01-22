@@ -87,4 +87,12 @@ export class SocketService {
     onPlayerLeft(): Observable<string> {
         return this.socket.fromEvent(SOCKET_EVENTS.PLAYER_LEFT);
     }
+
+  setNumberRounds(number: number): void {
+    this.socket.emit(SOCKET_EVENTS.SET_NUMBER_ROUNDS, number);
+  }
+
+  onSetNumberRounds(): Observable<number> {
+    return this.socket.fromEvent(SOCKET_EVENTS.SET_NUMBER_ROUNDS);
+  }
 }

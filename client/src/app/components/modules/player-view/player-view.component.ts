@@ -30,16 +30,21 @@ export class PlayerViewComponent {
         this.sent = false;
         this.winner = undefined;
       }
+      const notAllHaveAnswered = this.players && activeRound?.answers && activeRound.answers.length < this.players.length - 1;
       if(!activeRound?.situation) {
         this.state = ViewState.noSituation;
-      } else if(!this.sent) {
+      } else if(activeRound?.situation && !this.sent) {
         this.state = ViewState.searchGifs;
-      } else if(activeRound?.answers && this.players && activeRound.answers.length >= this.players.length-1) {
+      } else if(activeRound?.answers && this.sent && notAllHaveAnswered) {
         this.state = ViewState.waitForOthers;
       } else if(!activeRound?.winner) {
-        this.state = ViewState.answersReveal
+        this.state = ViewState.answersReveal;
       } else if(activeRound?.winner) {
-        this.state = ViewState.winnerDisplay
+        this.winner = {
+          winnerName: activeRound.winner,
+          winnerGifUrl: activeRound.answers?.find(({playerName}) => playerName === activeRound.winner)?.gifUrl ?? ''
+        };
+        this.state = ViewState.winnerDisplay;
       }
       this.activeRound = activeRound;
     });
@@ -52,10 +57,10 @@ export class PlayerViewComponent {
 
   public sendSelectedGif(gifItem: GifItem) {
     if (gifItem && this.ownPlayer) {
+      this.sent = true;
       const answer = {playerName: this.ownPlayer.name, gifUrl: gifItem.src, flipped: false }
       this.store.dispatch(addAnswerGif({answer}));
       this.socketService.sendAnswerGif(answer);
-      this.sent = true;
     }
   }
 

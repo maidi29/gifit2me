@@ -24,8 +24,5 @@ inside **server**: `npm install`, `npm run dev`
 **root**: `npm run build`, `npm run start`
 
 ## Todo:
-- Styling and wording
-- Refactoring
-- meta content
 - Add situations
 

@@ -1,1 +1,10 @@
-<p>results works!</p>
+<div class="results">
+  <div *ngFor="let player of players; let i=index;" class="person" [ngClass]="{'me': player.isSelf}">
+    <div class="avatar" [ngClass]="{'winner': i===0}">
+      <img *ngIf="player.avatar" [src]="player.avatar" [alt]="player.name" />
+    </div>
+    <div class="name">{{player.name}}</div>
+    <div>{{player.score}}</div>
+  </div>
+</div>
+<app-button (click)="newGame()">New game</app-button>

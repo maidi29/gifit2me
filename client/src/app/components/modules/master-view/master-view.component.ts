@@ -4,6 +4,8 @@ import {Store} from "@ngrx/store";
 import {SocketService} from "../../../services/socket.service";
 import {Round} from "../../../model/round.model";
 import {Player} from "../../../model/player.model";
+import {Router} from "@angular/router";
+import {ROUTES} from "../../../app-routing.module";
 
 enum ViewState { setSituation, waitForPlayers, answersReveal, winnerDisplay}
 
@@ -18,9 +20,13 @@ export class MasterViewComponent {
   public selectedWinner?: string;
   public winner?: {winnerGifUrl: string, winnerName: string}
   public players?: Player[];
+  public numberRounds?: number;
   public state: ViewState = ViewState.setSituation;
 
-  constructor(private store: Store<State>, private socketService: SocketService) {
+  constructor(private store: Store<State>, private socketService: SocketService, private router: Router) {
+    store.select("numberRounds").subscribe((number) => {
+      this.numberRounds = number;
+    });
     store.select("players").subscribe((players) => {
       this.players = players;
     });
@@ -66,7 +72,6 @@ export class MasterViewComponent {
       this.store.dispatch(updateMaster({name:newMaster.name}));
       this.socketService.updateMaster(newMaster.name);
     }
-
   }
 
 }

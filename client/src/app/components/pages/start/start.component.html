@@ -7,9 +7,9 @@
     <img *ngIf="avatar" [src]="avatar" (click)="showAvatarGenerator = true" class="avatar" alt="avatar"/>
     <app-input class="name-input" [placeholder]="'Name'" required [formControlName]="'name'"
        [errorMessage]="startForm.controls.name.invalid && startForm.controls.name.touched ?
-       ((startForm.controls.name.errors?.required && 'Please enter a Name') ||
-        (startForm.controls.name.errors?.maxlength && 'Please enter a maximum of 50 characters') ||
-        (startForm.controls.name.errors?.alreadyTaken && 'Name is already taken by another player in the room')
+       ((startForm.controls.name.errors?.['required'] && 'Please enter a Name') ||
+        (startForm.controls.name.errors?.['maxlength'] && 'Please enter a maximum of 50 characters') ||
+        (startForm.controls.name.errors?.['alreadyTaken'] && 'Name is already taken by another player in the room')
        ): undefined"
     ></app-input>
   </div>
@@ -23,11 +23,11 @@
     <div class="join">
       <app-input [placeholder]="'Game ID'" [formControlName]="'gameId'" maxlength="3"
        [errorMessage]="startForm.controls.gameId.invalid && startForm.controls.gameId.touched ?
-       ((startForm.controls.gameId.errors?.required && 'Please enter a Game ID') ||
-        (startForm.controls.gameId.errors?.minlength && 'Please enter at least 3 characters') ||
-        (startForm.controls.gameId.errors?.notFound && 'No Game with this ID was found') ||
-        (startForm.controls.gameId.errors?.started && 'Game has already started') ||
-        (startForm.controls.gameId.errors?.full && 'Room is full')
+       ((startForm.controls.gameId.errors?.['required'] && 'Please enter a Game ID') ||
+        (startForm.controls.gameId.errors?.['minlength'] && 'Please enter at least 3 characters') ||
+        (startForm.controls.gameId.errors?.['notFound'] && 'No Game with this ID was found') ||
+        (startForm.controls.gameId.errors?.['started'] && 'Game has already started') ||
+        (startForm.controls.gameId.errors?.['full'] && 'Room is full')
        ): undefined"
       ></app-input>
       <app-button (click)="startGame(false)">Join game</app-button>
@@ -36,10 +36,15 @@
 </form>
 <div class="how-it-works">
   <app-collapsible header="How it works">
-    <p>GIF it 2 me is a turn-based real-time party game for 3 to 9 players. </p>
-    <p>In each round another player is the game leader and thinks of a situation (or chooses from a selection of example situations) to which the players must find a suitable, preferably funny GIF. They can search the Giphy database to do this.</p>
-    <p>As soon as all players have submitted a GIF, the master starts to reveal them. Then he decides which of the answers is the funniest and chooses it as the winner. The corresponding player receives a point and the role of the master changes to the next player, whose turn it is to think up a situation.</p>
-    <p>The game ends when the players decide to do so and the winner is whoever has the most points at that moment.</p>
+    <p>GIF it 2 me is a turn-based real-time party game for 3 to 9 players.</p>
+    <p>In each round another player is the master and thinks of a situation (or chooses from a selection of example
+      situations) to which the players must find a suitable, preferably funny GIF. They can search the Giphy database
+      to do this.</p>
+    <p>As soon as all players have submitted a GIF, the master starts to reveal them. Then he decides which of the answers
+      is the funniest and chooses it as the winner. The corresponding player receives a point and the role of the master
+      changes to the next player, whose turn it is to think up a situation.</p>
+    <p>The game ends as soon as each player has been master as many times as defined in the number of runs at the
+      beginning.</p>
   </app-collapsible>
 </div>
 <app-avatar-generator [show]="showAvatarGenerator" (avatar)="updateAvatar($event)" (close)="showAvatarGenerator = false"></app-avatar-generator>

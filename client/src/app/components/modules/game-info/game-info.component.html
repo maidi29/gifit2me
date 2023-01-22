@@ -1,14 +1,13 @@
 <div class="game-info">
-  <div *ngIf="activeRound">Round {{activeRound.index}}</div>
+  <div *ngIf="activeRound">Round {{activeRound.index}} <ng-container *ngIf="numberRounds">/ {{numberRounds}}</ng-container></div>
   <div class="player-info">
     <div *ngFor="let player of players" class="player">
       <div [ngClass]= "{checked: hasAnswered(player.name)}">
         <img *ngIf="player.avatar" [src]="player.avatar" class="avatar" alt="avatar" />
       </div>
       <div class="info">
-        <div [ngClass]="{
-              'name': true,
-              'me': player.name===ownPlayer?.name,
+        <div class="name" [ngClass]="{
+              'me': player.isSelf,
               'master': player.isMaster
             }">{{player.name}}
           <ng-container *ngIf="player.isMaster">

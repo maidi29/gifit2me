@@ -26,15 +26,18 @@ h2 {
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
+    app-flip-card {
+      cursor: pointer;
+      .answer-gif {
+        max-width:100%;
+        max-height: 100%;
+      }
+      .hint {
+        color: #888;
+      }
+    }
     .winner-button {
       margin-top: 0.5rem;
     }
-  }
-}
-
-app-flip-card {
-  cursor: pointer;
-  .hint {
-    color: #888;
   }
 }

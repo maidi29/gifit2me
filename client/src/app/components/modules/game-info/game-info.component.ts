@@ -9,16 +9,12 @@ import {Player} from "../../../model/player.model";
   templateUrl: './game-info.component.html',
   styleUrls: ['./game-info.component.scss']
 })
-export class GameInfoComponent implements OnInit {
+export class GameInfoComponent {
   @Input() activeRound?: Round;
   @Input() players?: Player[];
-  @Input() ownPlayer?: Player;
+  @Input() numberRounds?: number;
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
+  constructor() {}
 
   public hasAnswered(name: string): boolean {
     return ((this.activeRound?.answers?.find(({playerName})=> playerName === name)) !== undefined) &&

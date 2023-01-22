@@ -88,6 +88,10 @@ module.exports = (io) => {
             socket.broadcast.to(localRoomId).emit(SOCKET_EVENTS.UPDATE_MASTER, name);
         });
 
+        socket.on(SOCKET_EVENTS.SET_NUMBER_ROUNDS, async (number) => {
+            socket.broadcast.to(localRoomId).emit(SOCKET_EVENTS.SET_NUMBER_ROUNDS, number);
+        });
+
         socket.on('disconnecting', () => {
             const allPlayers = io.sockets.adapter.rooms.get(localRoomId)?.['allPlayers'];
             if(allPlayers) io.sockets.adapter.rooms.get(localRoomId)['allPlayers'] = allPlayers.filter(obj => obj.playerName !== playerName);

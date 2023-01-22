@@ -6,6 +6,9 @@
       <app-share *ngIf="roomId" [gameId]="roomId"></app-share>
     </div>
   </div>
+  <div>
+    Play <div class="number-runs"><app-input [(ngModel)]="numberRuns" maxlength="2"></app-input></div> full runs.
+  </div>
   <div class="container">
     <div>Has everyone joined?</div>
     <app-button (click)="startNewRound()" [autoWidth]="true">Start!</app-button>
