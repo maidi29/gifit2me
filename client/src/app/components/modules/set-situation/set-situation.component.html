@@ -2,7 +2,7 @@
   <div class="create-container">
     <div>Create a situation:</div>
     <div class="input-container">
-      <app-input [(ngModel)]="situationInput" (keydown.enter)="setSituation(situationInput)"></app-input>
+      <app-input [(ngModel)]="situationInput" (keydown.enter)="setSituation(situationInput)" [paddingRight]="6"></app-input>
       <app-button (click)="setSituation(situationInput)">
         <svg xmlns="http://www.w3.org/2000/svg" width="25px" viewBox="0 0 512 512"><g><path style="fill: #fff" d="M499.436,225.905L295.858,24.536c-16.623-16.438-43.428-16.305-59.866,0.328   c-16.438,16.613-16.294,43.418,0.329,59.856l130.356,128.958H42.329C18.956,213.679,0,232.624,0,255.997   c0,23.383,18.956,42.328,42.329,42.328h324.347L236.321,427.273c-16.623,16.438-16.767,43.254-0.329,59.867   c16.438,16.622,43.243,16.766,59.866,0.328l203.578-201.368c8.044-7.963,12.564-18.792,12.564-30.102   C512,244.685,507.479,233.866,499.436,225.905z"/></g></svg>
       </app-button>

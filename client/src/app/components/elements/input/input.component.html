@@ -1,4 +1,9 @@
-<input class="input" placeholder="{{placeholder}}" [(ngModel)]="value" (blur)="onBlur()"/>
+<input class="input"
+       placeholder="{{placeholder}}"
+       [(ngModel)]="value"
+       (blur)="onBlur()"
+       [ngStyle]="{'padding-right': paddingRight+'rem'}"
+/>
 <div *ngIf="errorMessage" class="alert">
   ⚠ {{errorMessage}}
 </div>
