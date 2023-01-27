@@ -7,7 +7,7 @@
       </div>
     </button>
   </div>
-  <div class="content" [ngStyle]="{height: isOpen ? content.offsetHeight+'px' : 0+'px' }">
+  <div class="content" [ngStyle]="{height: isOpen ? (content.offsetHeight+32)+'px' : 0+'px' }">
       <div #content><ng-content></ng-content></div>
   </div>
 </div>

@@ -1,19 +1,16 @@
-import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import {Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-collapsible',
   templateUrl: './collapsible.component.html',
   styleUrls: ['./collapsible.component.scss']
 })
-export class CollapsibleComponent implements OnInit {
+export class CollapsibleComponent {
   @Input() header: string = "";
 
   public isOpen = false;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   public handleOpen () {
     this.isOpen = !this.isOpen;
