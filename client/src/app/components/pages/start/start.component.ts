@@ -6,6 +6,7 @@ import {addPlayers, setRoom, State} from "../../../reducers/reducers";
 import {Player} from "../../../model/player.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ROUTES} from "../../../app-routing.module";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-start',
@@ -16,6 +17,9 @@ export class StartComponent implements OnInit {
   private player?: Player;
   public avatar?: string;
   public showAvatarGenerator: boolean = false;
+
+  private joinRoomSub: Subscription = new Subscription();
+  private createRoomSub: Subscription = new Subscription();
 
   public startForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(20)]),
@@ -37,12 +41,17 @@ export class StartComponent implements OnInit {
     this.listenToJoinError();
     this.resetAllErrorsOnChange();
 
-    this.socketService.onJoinRoom().subscribe(({players, roomId}) => {
+    this.joinRoomSub = this.socketService.onJoinRoom().subscribe(({players, roomId}) => {
       this.dispatchStart(roomId, players)
     });
-    this.socketService.onCreateRoom().subscribe((roomId: string) => {
+    this.createRoomSub = this.socketService.onCreateRoom().subscribe((roomId: string) => {
       this.dispatchStart(roomId)
     });
+  }
+
+  ngOnDestroy() {
+    this.joinRoomSub.unsubscribe();
+    this.createRoomSub.unsubscribe();
   }
 
   public startGame(newGame: boolean): void {

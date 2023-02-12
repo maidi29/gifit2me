@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Store} from "@ngrx/store";
-import {State} from "../../../reducers/reducers";
+import {reset, State} from "../../../reducers/reducers";
 import {Player} from "../../../model/player.model";
 import {ROUTES} from "../../../app-routing.module";
 import {Router} from "@angular/router";
@@ -26,6 +26,7 @@ export class ResultsComponent implements OnInit {
   }
 
   public newGame(): void {
+    this.store.dispatch(reset());
     this.router.navigate([ROUTES.START])
   }
 
