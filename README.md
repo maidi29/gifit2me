@@ -4,9 +4,9 @@
 
 ![gifit2me](client/src/assets/images/gifit2me.png)
 
-GIF it 2 me is a turn-based real-time party game for 3 to 9 players.
+GIF it 2 me is a turn-based real-time party game for 3 to 9 players that uses the Giphy API.
 
-each round another player is the master and thinks of a situation (or chooses from a selection of example situations) 
+Each round another player is the master and thinks of a situation (or chooses from a selection of example situations) 
 to which the players must find a suitable, preferably funny GIF. They can search the Giphy database to do this.
 
 As soon as all players have submitted a GIF, the master starts to reveal them. Then he decides which of the answers is the 
