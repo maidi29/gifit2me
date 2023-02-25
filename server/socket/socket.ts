@@ -92,6 +92,10 @@ module.exports = (io) => {
             socket.broadcast.to(localRoomId).emit(SOCKET_EVENTS.SET_NUMBER_ROUNDS, number);
         });
 
+        socket.on(SOCKET_EVENTS.PLAYER_LEFT, async (name) => {
+            socket.broadcast.to(localRoomId).emit(SOCKET_EVENTS.PLAYER_LEFT, name);
+        })
+
         socket.on('disconnecting', () => {
             const allPlayers = io.sockets.adapter.rooms.get(localRoomId)?.['allPlayers'];
             if(allPlayers) io.sockets.adapter.rooms.get(localRoomId)['allPlayers'] = allPlayers.filter(obj => obj.playerName !== playerName);

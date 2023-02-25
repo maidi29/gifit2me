@@ -84,6 +84,10 @@ export class SocketService {
       return this.socket.fromEvent(SOCKET_EVENTS.UPDATE_MASTER);
     }
 
+    playerLeft (name: string): void {
+      this.socket.emit(SOCKET_EVENTS.PLAYER_LEFT, name);
+    }
+
     onPlayerLeft(): Observable<string> {
         return this.socket.fromEvent(SOCKET_EVENTS.PLAYER_LEFT);
     }

@@ -2,6 +2,11 @@
 <!--<h2>This game is so much fun!</h2>
 <img class="start-gif" src="https://media3.giphy.com/media/ywItJm3cLmPYI/giphy.gif?cid=ecf05e47q1c0l59j6q2j6ln4bcc6vlx85qx8znot8o4i1qp3&rid=giphy.gif&ct=g"/>
 <h3>Find out yourself:</h3>-->
+<app-modal *ngIf="room">
+    <div>You are in a game right now!</div>
+    <app-button (click)="returnToGame()">Return to game</app-button>
+    <app-button [secondary]="true" (click)="leaveGame()">Leave game</app-button>
+</app-modal>
 <form [formGroup]="startForm" class="form">
   <div class="player-settings">
     <img *ngIf="avatar" [src]="avatar" (click)="showAvatarGenerator = true" class="avatar" alt="avatar"/>

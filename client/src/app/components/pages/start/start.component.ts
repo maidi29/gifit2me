@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Store} from "@ngrx/store";
-import {addPlayers, setRoom, State} from "../../../reducers/reducers";
+import {addPlayers, resetAll, setRoom, State} from "../../../reducers/reducers";
 import {Player} from "../../../model/player.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ROUTES} from "../../../app-routing.module";
@@ -17,6 +17,8 @@ export class StartComponent implements OnInit {
   private player?: Player;
   public avatar?: string;
   public showAvatarGenerator: boolean = false;
+  private ownPlayer?: Player;
+  public room?: string;
 
   private joinRoomSub: Subscription = new Subscription();
   private createRoomSub: Subscription = new Subscription();
@@ -30,7 +32,17 @@ export class StartComponent implements OnInit {
               private router: Router,
               private store: Store<State>,
               private route: ActivatedRoute,
-  ) {}
+  ) {
+    store.select("room").subscribe((room) => {
+      this.room = room;
+    });
+    store.select("players").subscribe((players) => {
+      this.ownPlayer = players.find(({isSelf}) => !!isSelf);
+      if(this.ownPlayer?.name) {
+        this.startForm.controls.name.setValue(this.ownPlayer?.name);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -100,4 +112,16 @@ export class StartComponent implements OnInit {
       this.startForm.get(error.controlName)?.setErrors({[error.error]: true})
     });
   }
+
+  public returnToGame() {
+    this.router.navigate([ROUTES.GAME]);
+  }
+
+  public leaveGame() {
+    if(this.ownPlayer?.name) {
+      this.socketService.playerLeft(this.ownPlayer.name);
+    }
+    this.store.dispatch(resetAll());
+  }
+
 }

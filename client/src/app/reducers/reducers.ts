@@ -33,7 +33,8 @@ export const updateWinner = createAction('Update Winner', props<{name: string}>(
 export const setRoom = createAction('Set Room', props<{room: string}>());
 export const flipAnswer = createAction('Flip Answer', props<{playerName: string}>());
 export const setNumberRounds = createAction('Set Number Rounds', props<{number: number}>());
-export const reset = createAction('Reset');
+export const resetAll = createAction('Reset All');
+export const softReset = createAction('Soft Reset');
 
 export const playersReducer = createReducer(
   initialState.players,
@@ -117,8 +118,15 @@ export const reducers: ActionReducerMap<State> = {
 
 export const resetReducer = (reducer: ActionReducer<State>): ActionReducer<State> => {
   return (state, action) => {
-    if (action?.type === 'Reset') {
+    if (action?.type === 'Reset All') {
       return reducer(initialState, {type: INIT});
+    } else if (action?.type === "Soft Reset") {
+      return reducer({
+        players: state?.players || [],
+        room: state?.room,
+        numberRounds: undefined,
+        activeRound: undefined
+      }, action)
     }
     return reducer(state, action);
   };
