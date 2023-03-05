@@ -20,7 +20,7 @@ beginning.
 
 inside **client**: `npm install`, `npm start`
 
-inside **server**: `npm install`, `npm run dev`
+inside **root**: `npm install`, `npm run dev`
 
 ## prod
 

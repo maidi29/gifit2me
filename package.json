@@ -3,7 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "(cd client && npm ci --legacy-peer-deps && npm run build) && (cd server && npm ci)",
-    "start": "cd server && npm run start"
+    "start": "set \"NODE_ENV=production\" && ts-node --transpile-only bin/www.ts",
+    "dev": "set \"NODE_ENV=development\" && nodemon",
+    "build": "cd client && npm ci --legacy-peer-deps && npm run build"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "^3.1.8",
+    "express": "~4.16.1",
+    "hbs": "~4.0.4",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "socket.io": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.8.5",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.4"
   }
 }
